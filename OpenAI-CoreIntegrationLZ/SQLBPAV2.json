@@ -1,0 +1,1028 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "workflows_SQL_BPA_ReadLink_Generalized_name": {
+            "defaultValue": "OpenAI-SQL-BPA",
+            "type": "String"
+        },
+        "connections_azuremonitorlogs_externalid": {
+            "defaultValue": "/subscriptions/replacewithsubid/resourceGroups/replacewithRG/providers/Microsoft.Web/connections/azuremonitorlogs",
+            "type": "String"
+        },
+        "connections_office365_externalid": {
+            "defaultValue": "/subscriptions/replacewithsubid/resourceGroups/replacewithRG/providers/Microsoft.Web/connections/office365",
+            "type": "String"
+        },
+        "location": {
+            "defaultValue": "westeurope",
+            "type": "String"
+        }
+    },
+    "variables": {},
+    "resources": [
+        {
+            "type": "Microsoft.Logic/workflows",
+            "apiVersion": "2017-07-01",
+            "name": "[parameters('workflows_SQL_BPA_ReadLink_Generalized_name')]",
+            "location": "[parameters('location')]",
+            "identity": {
+                "type": "SystemAssigned"
+            },
+            "properties": {
+                "state": "Disabled",
+                "definition": {
+                    "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+                    "contentVersion": "1.0.0.0",
+                    "parameters": {
+                       "$connections": {
+                            "defaultValue": {},
+                            "type": "Object"
+                        }
+                    },
+                    "triggers": {
+                        "Recurrence": {
+                            "recurrence": {
+                                "frequency": "Week",
+                                "interval": 1,
+                                "schedule": {
+                                    "hours": [
+                                        "9"
+                                    ],
+                                    "weekDays": [
+                                        "Sunday"
+                                    ]
+                                }
+                            },
+                            "evaluatedRecurrence": {
+                                "frequency": "Week",
+                                "interval": 1,
+                                "schedule": {
+                                    "hours": [
+                                        "9"
+                                    ],
+                                    "weekDays": [
+                                        "Sunday"
+                                    ]
+                                }
+                            },
+                            "type": "Recurrence"
+                        }
+                    },
+                    "actions": {
+                        "Article": {
+                            "runAfter": {
+                                "Document": [
+                                    "Succeeded"
+                                ]
+                            },
+                            "type": "InitializeVariable",
+                            "inputs": {
+                                "variables": [
+                                    {
+                                        "name": "Article",
+                                        "type": "array"
+                                    }
+                                ]
+                            }
+                        },
+                        "ComposeMailMessage": {
+                            "runAfter": {
+                                "FilePathVariabile": [
+                                    "Succeeded"
+                                ]
+                            },
+                            "type": "Compose",
+                            "inputs": "<!DOCTYPE html>\n<html>\n<p><strong>Automatic SQL Best Practice Assessment Report System</strong><br>\n<br>\nHi, attached are the results of the SQL BPA with comments from the AI regarding the High and Medium severity<br></p>\n-------------------------------------------------------------------------------------<br>\n</br>\n<br>\n<p><h5><strong>\n(*) The system generates the data using OpenAI, therefore anomalies in the text relating to formatting or content may occur.<br></strong></p></h5>\n<img src=\"?width=400 height=150\" alt=\"\" />\n\n</html>"
+                        },
+                        "Create_HTML_table": {
+                            "runAfter": {
+                                "Create_CSV_table": [
+                                    "Succeeded"
+                                ]
+                            },
+                            "type": "Table",
+                            "inputs": {
+                                "from": "@variables('CSV')",
+                                "format": "HTML"
+                            }
+                        },
+                        "Document": {
+                            "runAfter": {
+                                "Redirection_Link_Variable": [
+                                    "Succeeded"
+                                ]
+                            },
+                            "type": "InitializeVariable",
+                            "inputs": {
+                                "variables": [
+                                    {
+                                        "name": "Document",
+                                        "type": "string"
+                                    }
+                                ]
+                            }
+                        },
+                        "FilePathVariabile": {
+                            "runAfter": {
+                                "HTML-custom": [
+                                    "Succeeded"
+                                ]
+                            },
+                            "type": "InitializeVariable",
+                            "inputs": {
+                                "variables": [
+                                    {
+                                        "name": "FilePath",
+                                        "type": "string"
+                                    }
+                                ]
+                            }
+                        },
+                        "For_eachSQLResult": {
+                            "foreach": "@body('Run_query_and_list_results')?['value']",
+                            "actions": {
+                                "Compose": {
+                                    "runAfter": {
+                                        "Read_real_HelpLink": [
+                                            "Succeeded"
+                                        ]
+                                    },
+                                    "type": "Compose",
+                                    "inputs": {
+                                        "htmlContent": "@{body('Read_real_HelpLink')}"
+                                    }
+                                },
+                                "Condition": {
+                                    "actions": {
+                                        "For_each_AI_Response": {
+                                            "foreach": "@body('Parse_JSON')?['choices']",
+                                            "actions": {
+                                                "Append_to_array_variable": {
+                                                    "runAfter": {
+                                                        "ComposeCSV": [
+                                                            "Succeeded"
+                                                        ]
+                                                    },
+                                                    "type": "AppendToArrayVariable",
+                                                    "inputs": {
+                                                        "name": "CSV",
+                                                        "value": "@outputs('ComposeCSV')"
+                                                    }
+                                                },
+                                                "ComposeCSV": {
+                                                    "type": "Compose",
+                                                    "inputs": {
+                                                        "TagetName": "@{items('For_eachSQLResult')?['TargetName']}",
+                                                        "Severity": "@{items('For_eachSQLResult')?['Severity']}",
+                                                        "Message": "@{items('For_eachSQLResult')?['Message']}",
+                                                        "OpenAI Message": "@{items('For_each_AI_Response')?['message']?['content']}",
+                                                        "HelpLink": "@{items('For_eachSQLResult')?['HelpLink']}"
+                                                    }
+                                                }
+                                            },
+                                            "runAfter": {
+                                                "Parse_JSON": [
+                                                    "Succeeded"
+                                                ]
+                                            },
+                                            "type": "Foreach"
+                                        },
+                                        "HTTP_request_to_Azure_OpenAI": {
+                                            "type": "Http",
+                                            "inputs": {
+                                                "uri": "https://changeendpointname.openai.azure.com/openai/deployments/changemodelname/chat/completions?api-version=2024-02-15-preview",
+                                                "method": "POST",
+                                                "headers": {
+                                                    "api-key": "@variables('Api-Key')"
+                                                },
+                                                "body": {
+                                                    "max_tokens": 1400,
+                                                    "messages": [
+                                                        {
+                                                            "content": "You are a SQL System Administrator",
+                                                            "role": "user"
+                                                        },
+                                                        {
+                                                            "content": "@{variables('Question')}",
+                                                            "role": "user"
+                                                        }
+                                                    ]
+                                                }
+                                            }
+                                        },
+                                        "Parse_JSON": {
+                                            "runAfter": {
+                                                "HTTP_request_to_Azure_OpenAI": [
+                                                    "Succeeded"
+                                                ]
+                                            },
+                                            "type": "ParseJson",
+                                            "inputs": {
+                                                "content": "@body('HTTP_request_to_Azure_OpenAI')",
+                                                "schema": {
+                                                    "properties": {
+                                                        "body": {
+                                                            "properties": {
+                                                                "choices": {
+                                                                    "items": {
+                                                                        "properties": {
+                                                                            "content_filter_results": {
+                                                                                "properties": {
+                                                                                    "hate": {
+                                                                                        "properties": {
+                                                                                            "filtered": {
+                                                                                                "type": "boolean"
+                                                                                            },
+                                                                                            "severity": {
+                                                                                                "type": "string"
+                                                                                            }
+                                                                                        },
+                                                                                        "type": "object"
+                                                                                    },
+                                                                                    "self_harm": {
+                                                                                        "properties": {
+                                                                                            "filtered": {
+                                                                                                "type": "boolean"
+                                                                                            },
+                                                                                            "severity": {
+                                                                                                "type": "string"
+                                                                                            }
+                                                                                        },
+                                                                                        "type": "object"
+                                                                                    },
+                                                                                    "sexual": {
+                                                                                        "properties": {
+                                                                                            "filtered": {
+                                                                                                "type": "boolean"
+                                                                                            },
+                                                                                            "severity": {
+                                                                                                "type": "string"
+                                                                                            }
+                                                                                        },
+                                                                                        "type": "object"
+                                                                                    },
+                                                                                    "violence": {
+                                                                                        "properties": {
+                                                                                            "filtered": {
+                                                                                                "type": "boolean"
+                                                                                            },
+                                                                                            "severity": {
+                                                                                                "type": "string"
+                                                                                            }
+                                                                                        },
+                                                                                        "type": "object"
+                                                                                    }
+                                                                                },
+                                                                                "type": "object"
+                                                                            },
+                                                                            "finish_reason": {
+                                                                                "type": "string"
+                                                                            },
+                                                                            "index": {
+                                                                                "type": "integer"
+                                                                            },
+                                                                            "message": {
+                                                                                "properties": {
+                                                                                    "content": {
+                                                                                        "type": "string"
+                                                                                    },
+                                                                                    "role": {
+                                                                                        "type": "string"
+                                                                                    }
+                                                                                },
+                                                                                "type": "object"
+                                                                            }
+                                                                        },
+                                                                        "required": [
+                                                                            "index",
+                                                                            "finish_reason",
+                                                                            "message",
+                                                                            "content_filter_results"
+                                                                        ],
+                                                                        "type": "object"
+                                                                    },
+                                                                    "type": "array"
+                                                                },
+                                                                "created": {
+                                                                    "type": "integer"
+                                                                },
+                                                                "id": {
+                                                                    "type": "string"
+                                                                },
+                                                                "model": {
+                                                                    "type": "string"
+                                                                },
+                                                                "object": {
+                                                                    "type": "string"
+                                                                },
+                                                                "prompt_filter_results": {
+                                                                    "items": {
+                                                                        "properties": {
+                                                                            "content_filter_results": {
+                                                                                "properties": {
+                                                                                    "hate": {
+                                                                                        "properties": {
+                                                                                            "filtered": {
+                                                                                                "type": "boolean"
+                                                                                            },
+                                                                                            "severity": {
+                                                                                                "type": "string"
+                                                                                            }
+                                                                                        },
+                                                                                        "type": "object"
+                                                                                    },
+                                                                                    "self_harm": {
+                                                                                        "properties": {
+                                                                                            "filtered": {
+                                                                                                "type": "boolean"
+                                                                                            },
+                                                                                            "severity": {
+                                                                                                "type": "string"
+                                                                                            }
+                                                                                        },
+                                                                                        "type": "object"
+                                                                                    },
+                                                                                    "sexual": {
+                                                                                        "properties": {
+                                                                                            "filtered": {
+                                                                                                "type": "boolean"
+                                                                                            },
+                                                                                            "severity": {
+                                                                                                "type": "string"
+                                                                                            }
+                                                                                        },
+                                                                                        "type": "object"
+                                                                                    },
+                                                                                    "violence": {
+                                                                                        "properties": {
+                                                                                            "filtered": {
+                                                                                                "type": "boolean"
+                                                                                            },
+                                                                                            "severity": {
+                                                                                                "type": "string"
+                                                                                            }
+                                                                                        },
+                                                                                        "type": "object"
+                                                                                    }
+                                                                                },
+                                                                                "type": "object"
+                                                                            },
+                                                                            "prompt_index": {
+                                                                                "type": "integer"
+                                                                            }
+                                                                        },
+                                                                        "required": [
+                                                                            "prompt_index",
+                                                                            "content_filter_results"
+                                                                        ],
+                                                                        "type": "object"
+                                                                    },
+                                                                    "type": "array"
+                                                                },
+                                                                "usage": {
+                                                                    "properties": {
+                                                                        "completion_tokens": {
+                                                                            "type": "integer"
+                                                                        },
+                                                                        "prompt_tokens": {
+                                                                            "type": "integer"
+                                                                        },
+                                                                        "total_tokens": {
+                                                                            "type": "integer"
+                                                                        }
+                                                                    },
+                                                                    "type": "object"
+                                                                }
+                                                            },
+                                                            "type": "object"
+                                                        }
+                                                    },
+                                                    "type": "object"
+                                                }
+                                            }
+                                        }
+                                    },
+                                    "runAfter": {
+                                        "SetVariableQuestion": [
+                                            "Succeeded"
+                                        ]
+                                    },
+                                    "else": {
+                                        "actions": {}
+                                    },
+                                    "expression": {
+                                        "or": [
+                                            {
+                                                "equals": [
+                                                    "@item()?['Severity']",
+                                                    "High"
+                                                ]
+                                            },
+                                            {
+                                                "equals": [
+                                                    "@item()?['Severity']",
+                                                    "Medium"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "type": "If"
+                                },
+                                "Extract_Article": {
+                                    "runAfter": {
+                                        "Read_Final_Link": [
+                                            "Succeeded"
+                                        ]
+                                    },
+                                    "type": "Compose",
+                                    "inputs": "@body('Read_Final_Link')?['htmlContent']"
+                                },
+                                "For_each_result_of_Bing": {
+                                    "foreach": "@body('Parse_WebSearch')?['webPages']?['value']",
+                                    "actions": {
+                                        "Set_variable_Redirection_Link": {
+                                            "type": "SetVariable",
+                                            "inputs": {
+                                                "name": "Redirection Link",
+                                                "value": "@{items('For_each_result_of_Bing')?['url']}"
+                                            }
+                                        }
+                                    },
+                                    "runAfter": {
+                                        "Parse_WebSearch": [
+                                            "Succeeded"
+                                        ]
+                                    },
+                                    "type": "Foreach",
+                                    "runtimeConfiguration": {
+                                        "concurrency": {
+                                            "repetitions": 1
+                                        }
+                                    }
+                                },
+                                "Parse_WebSearch": {
+                                    "runAfter": {
+                                        "Search_for_the_real_link_from_HelpLink": [
+                                            "Succeeded"
+                                        ]
+                                    },
+                                    "type": "ParseJson",
+                                    "inputs": {
+                                        "content": "@body('Search_for_the_real_link_from_HelpLink')",
+                                        "schema": {
+                                            "properties": {
+                                                "body": {
+                                                    "properties": {
+                                                        "_type": {
+                                                            "type": "string"
+                                                        },
+                                                        "queryContext": {
+                                                            "properties": {
+                                                                "originalQuery": {
+                                                                    "type": "string"
+                                                                }
+                                                            },
+                                                            "type": "object"
+                                                        },
+                                                        "rankingResponse": {
+                                                            "properties": {
+                                                                "mainline": {
+                                                                    "properties": {
+                                                                        "items": {
+                                                                            "items": {
+                                                                                "properties": {
+                                                                                    "answerType": {
+                                                                                        "type": "string"
+                                                                                    },
+                                                                                    "resultIndex": {
+                                                                                        "type": "integer"
+                                                                                    },
+                                                                                    "value": {
+                                                                                        "properties": {
+                                                                                            "id": {
+                                                                                                "type": "string"
+                                                                                            }
+                                                                                        },
+                                                                                        "type": "object"
+                                                                                    }
+                                                                                },
+                                                                                "required": [
+                                                                                    "answerType",
+                                                                                    "value"
+                                                                                ],
+                                                                                "type": "object"
+                                                                            },
+                                                                            "type": "array"
+                                                                        }
+                                                                    },
+                                                                    "type": "object"
+                                                                },
+                                                                "sidebar": {
+                                                                    "properties": {
+                                                                        "items": {
+                                                                            "items": {
+                                                                                "properties": {
+                                                                                    "answerType": {
+                                                                                        "type": "string"
+                                                                                    }
+                                                                                },
+                                                                                "required": [
+                                                                                    "answerType"
+                                                                                ],
+                                                                                "type": "object"
+                                                                            },
+                                                                            "type": "array"
+                                                                        }
+                                                                    },
+                                                                    "type": "object"
+                                                                }
+                                                            },
+                                                            "type": "object"
+                                                        },
+                                                        "relatedSearches": {
+                                                            "properties": {
+                                                                "id": {
+                                                                    "type": "string"
+                                                                },
+                                                                "value": {
+                                                                    "items": {
+                                                                        "properties": {
+                                                                            "displayText": {
+                                                                                "type": "string"
+                                                                            },
+                                                                            "text": {
+                                                                                "type": "string"
+                                                                            },
+                                                                            "webSearchUrl": {
+                                                                                "type": "string"
+                                                                            }
+                                                                        },
+                                                                        "required": [
+                                                                            "text",
+                                                                            "displayText",
+                                                                            "webSearchUrl"
+                                                                        ],
+                                                                        "type": "object"
+                                                                    },
+                                                                    "type": "array"
+                                                                }
+                                                            },
+                                                            "type": "object"
+                                                        },
+                                                        "webPages": {
+                                                            "properties": {
+                                                                "someResultsRemoved": {
+                                                                    "type": "boolean"
+                                                                },
+                                                                "totalEstimatedMatches": {
+                                                                    "type": "integer"
+                                                                },
+                                                                "value": {
+                                                                    "items": {
+                                                                        "properties": {
+                                                                            "cachedPageUrl": {
+                                                                                "type": "string"
+                                                                            },
+                                                                            "dateLastCrawled": {
+                                                                                "type": "string"
+                                                                            },
+                                                                            "datePublished": {
+                                                                                "type": "string"
+                                                                            },
+                                                                            "datePublishedDisplayText": {
+                                                                                "type": "string"
+                                                                            },
+                                                                            "displayUrl": {
+                                                                                "type": "string"
+                                                                            },
+                                                                            "id": {
+                                                                                "type": "string"
+                                                                            },
+                                                                            "isFamilyFriendly": {
+                                                                                "type": "boolean"
+                                                                            },
+                                                                            "isNavigational": {
+                                                                                "type": "boolean"
+                                                                            },
+                                                                            "language": {
+                                                                                "type": "string"
+                                                                            },
+                                                                            "name": {
+                                                                                "type": "string"
+                                                                            },
+                                                                            "noCache": {
+                                                                                "type": "boolean"
+                                                                            },
+                                                                            "siteName": {
+                                                                                "type": "string"
+                                                                            },
+                                                                            "snippet": {
+                                                                                "type": "string"
+                                                                            },
+                                                                            "url": {
+                                                                                "type": "string"
+                                                                            }
+                                                                        },
+                                                                        "required": [
+                                                                            "id",
+                                                                            "name",
+                                                                            "url",
+                                                                            "datePublished",
+                                                                            "datePublishedDisplayText",
+                                                                            "isFamilyFriendly",
+                                                                            "displayUrl",
+                                                                            "snippet",
+                                                                            "dateLastCrawled",
+                                                                            "cachedPageUrl",
+                                                                            "language",
+                                                                            "isNavigational",
+                                                                            "noCache",
+                                                                            "siteName"
+                                                                        ],
+                                                                        "type": "object"
+                                                                    },
+                                                                    "type": "array"
+                                                                },
+                                                                "webSearchUrl": {
+                                                                    "type": "string"
+                                                                }
+                                                            },
+                                                            "type": "object"
+                                                        }
+                                                    },
+                                                    "type": "object"
+                                                },
+                                                "headers": {
+                                                    "properties": {
+                                                        "Accept-CH": {
+                                                            "type": "string"
+                                                        },
+                                                        "BingAPIs-Market": {
+                                                            "type": "string"
+                                                        },
+                                                        "BingAPIs-RGUID": {
+                                                            "type": "string"
+                                                        },
+                                                        "BingAPIs-SessionId": {
+                                                            "type": "string"
+                                                        },
+                                                        "BingAPIs-TraceId": {
+                                                            "type": "string"
+                                                        },
+                                                        "CSP-Billing-Usage": {
+                                                            "type": "string"
+                                                        },
+                                                        "Cache-Control": {
+                                                            "type": "string"
+                                                        },
+                                                        "Content-Length": {
+                                                            "type": "string"
+                                                        },
+                                                        "Content-Type": {
+                                                            "type": "string"
+                                                        },
+                                                        "Date": {
+                                                            "type": "string"
+                                                        },
+                                                        "Expires": {
+                                                            "type": "string"
+                                                        },
+                                                        "P3P": {
+                                                            "type": "string"
+                                                        },
+                                                        "Strict-Transport-Security": {
+                                                            "type": "string"
+                                                        },
+                                                        "Transfer-Encoding": {
+                                                            "type": "string"
+                                                        },
+                                                        "UserAgentReductionOptOut": {
+                                                            "type": "string"
+                                                        },
+                                                        "Vary": {
+                                                            "type": "string"
+                                                        },
+                                                        "X-Cache": {
+                                                            "type": "string"
+                                                        },
+                                                        "X-Content-Type-Options": {
+                                                            "type": "string"
+                                                        },
+                                                        "X-EventID": {
+                                                            "type": "string"
+                                                        },
+                                                        "X-MSAPI-UserState": {
+                                                            "type": "string"
+                                                        },
+                                                        "X-MSEdge-ClientID": {
+                                                            "type": "string"
+                                                        },
+                                                        "X-MSEdge-Ref": {
+                                                            "type": "string"
+                                                        },
+                                                        "X-Search-ResponseInfo": {
+                                                            "type": "string"
+                                                        },
+                                                        "apim-request-id": {
+                                                            "type": "string"
+                                                        }
+                                                    },
+                                                    "type": "object"
+                                                },
+                                                "statusCode": {
+                                                    "type": "integer"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    }
+                                },
+                                "Read_Final_Link": {
+                                    "runAfter": {
+                                        "Compose": [
+                                            "Succeeded"
+                                        ]
+                                    },
+                                    "type": "ParseJson",
+                                    "inputs": {
+                                        "content": "@outputs('Compose')",
+                                        "schema": {
+                                            "properties": {
+                                                "htmlContent": {
+                                                    "type": "string"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    }
+                                },
+                                "Search_for_the_real_link_from_HelpLink": {
+                                    "type": "Http",
+                                    "inputs": {
+                                        "uri": "https://api.bing.microsoft.com/v7.0/search?q=@{item()?['HelpLink']}&count=1",
+                                        "method": "GET",
+                                        "headers": {
+                                            "Ocp-Apim-Subscription-Key": "change with your BingSearch api Key"
+                                        }
+                                    },
+                                    "runtimeConfiguration": {
+                                        "contentTransfer": {
+                                            "transferMode": "Chunked"
+                                        }
+                                    }
+                                },
+                                "SetVariableQuestion": {
+                                    "runAfter": {
+                                        "Rimuovi_dall'articolo_elementi_superflui": [
+                                            "Succeeded"
+                                        ]
+                                    },
+                                    "type": "SetVariable",
+                                    "inputs": {
+                                        "name": "Question",
+                                        "value": "I have completed an Assessment on my SQL resources. This is one of the issue found:\n- Message Type: @{item()?['Message']}\n- Issue Description: @{item()?['Description']}\n- Affected Object: @{item()?['TargetName']}\nGuide me trought the solution using the information reported here: @{outputs('Rimuovi_dall''articolo_elementi_superflui')}\n\n"
+                                    }
+                                },
+                                "Set_variable_Article": {
+                                    "runAfter": {
+                                        "Set_variable_Document": [
+                                            "Succeeded"
+                                        ]
+                                    },
+                                    "type": "SetVariable",
+                                    "inputs": {
+                                        "name": "Article",
+                                        "value": "@split(variables('Document'),'<p>')"
+                                    }
+                                },
+                                "Set_variable_Document": {
+                                    "runAfter": {
+                                        "Extract_Article": [
+                                            "Succeeded"
+                                        ]
+                                    },
+                                    "type": "SetVariable",
+                                    "inputs": {
+                                        "name": "Document",
+                                        "value": "@{outputs('Extract_Article')}"
+                                    }
+                                },
+                                "Read_real_HelpLink": {
+                                    "runAfter": {
+                                        "For_each_result_of_Bing": [
+                                            "Succeeded"
+                                        ],
+                                        "Search_for_the_real_link_from_HelpLink": [
+                                            "Succeeded"
+                                        ]
+                                    },
+                                    "type": "Http",
+                                    "inputs": {
+                                        "uri": "@variables('Redirection Link')",
+                                        "method": "GET"
+                                    }
+                                },
+                                "Rimuovi_dall'articolo_elementi_superflui": {
+                                    "runAfter": {
+                                        "Set_variable_Article": [
+                                            "Succeeded"
+                                        ]
+                                    },
+                                    "type": "Compose",
+                                    "inputs": "@skip(variables('Article'), 2)\r\n"
+                                }
+                            },
+                            "runAfter": {
+                                "HelpLinkContent": [
+                                    "Succeeded"
+                                ]
+                            },
+                            "type": "Foreach",
+                            "runtimeConfiguration": {
+                                "concurrency": {
+                                    "repetitions": 1
+                                }
+                            }
+                        },
+                        "HTML-custom": {
+                            "runAfter": {
+                                "Create_HTML_table": [
+                                    "Succeeded"
+                                ]
+                            },
+                            "type": "InitializeVariable",
+                            "inputs": {
+                                "variables": [
+                                    {
+                                        "name": "HTML-custom",
+                                        "type": "string",
+                                        "value": "<!DOCTYPE html>\n<html>\n<head>\n<style>\nbody {\n  font-family: 'Arial', sans-serif;\n  margin: 0;\n  padding: 0;\n  background-color: #f8f9fa;\n}\n \n.container {\n  width: 100%;\n  margin: auto;\n  overflow: hidden;\n  padding: 20px;\n}\n \nh1 {\n  color: #333;\n  text-align: center;\n  padding: 20px 0;\n  margin: 0;\n  font-size: 2.5em;\n  font-family: 'Arial', sans-serif;\n}\n \n.search-container {\n  text-align: center;\n  margin-bottom: 20px;\n}\n \n.search-container input {\n  width: 50%;\n  padding: 10px;\n  font-size: 1.2em;\n  border: 1px solid #ccc;\n  border-radius: 5px;\n}\n \n.table-container {\n  width: 100%;\n  overflow-x: auto;\n  margin-top: 20px;\n}\n \ntable {\n  width: 100%;\n  border-collapse: collapse;\n  margin: 25px 0;\n  font-size: 1.2em;\n  box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);\n  table-layout: auto;\n}\n \nth, td {\n  padding: 12px 15px;\n  border: 1px solid #ddd;\n  word-wrap: break-word;\n  word-break: break-all;\n  max-width: 200px; /* you can adjust the width as needed */\n}\n \nth {\n  background-color: #04AA6D;\n  color: #ffffff;\n  text-align: left;\n  position: sticky;\n  top: 0;\n  z-index: 1;\n}\n \ntr:nth-child(even) {\n  background-color: #f3f3f3;\n}\n \ntr:hover {\n  background-color: #f1f1f1;\n}\n \nth, td {\n  resize: horizontal;\n  overflow: auto;\n}\n \nfooter {\n  background-color: #333;\n  color: #ffffff;\n  text-align: center;\n  padding: 10px 0;\n  position: fixed;\n  width: 100%;\n  bottom: 0;\n  left: 0;\n}\n \n@media (max-width: 600px) {\n  h1 {\n    font-size: 2em;\n  }\n  table, th, td {\n    font-size: 0.8em;\n  }\n}\n</style>\n<link href=\"https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap\" rel=\"stylesheet\">\n</head>\n<body>\n \n<div class=\"container\">\n<h1>SQL BPA-OpenAI Comment for severity High and Medium</h1>\n \n  <div class=\"search-container\">\n<input type=\"text\" id=\"searchInput\" onkeyup=\"searchTable()\" placeholder=\"Search for names..\">\n</div>\n \n  <div class=\"table-container\">\n    @{body('Create_HTML_table')}\n  </div>\n</div>\n \n<footer>\n&copy; 2024 Your Company. All rights reserved.\n</footer>\n \n<script>\nfunction searchTable() {\n  var input, filter, table, tr, td, i, j, txtValue;\n  input = document.getElementById(\"searchInput\");\n  filter = input.value.toLowerCase();\n  table = document.querySelector(\"table\");\n  tr = table.getElementsByTagName(\"tr\");\n \n  for (i = 1; i < tr.length; i++) {\n    tr[i].style.display = \"none\";\n    td = tr[i].getElementsByTagName(\"td\");\n    for (j = 0; j < td.length; j++) {\n      if (td[j]) {\n        txtValue = td[j].textContent || td[j].innerText;\n        if (txtValue.toLowerCase().indexOf(filter) > -1) {\n          tr[i].style.display = \"\";\n          break;\n        }\n      }\n    }\n  }\n}\n \nfunction wrapTextWithBreaks() {\n  var table = document.querySelector(\"table\");\n  if (table) {\n    var tdElements = table.getElementsByTagName(\"td\");\n    for (var i = 0; i < tdElements.length; i++) {\n      var td = tdElements[i];\n      td.innerHTML = td.innerHTML.replace(/\\. /g, '.<br><br>');\n    }\n  }\n}\n \n// Call the function to wrap text with breaks after the table is generated\ndocument.addEventListener(\"DOMContentLoaded\", function() {\n  wrapTextWithBreaks();\n});\n</script>\n \n</body>\n</html>"
+                                    }
+                                ]
+                            }
+                        },
+                        "HelpLinkContent": {
+                            "runAfter": {
+                                "Article": [
+                                    "Succeeded"
+                                ]
+                            },
+                            "type": "InitializeVariable",
+                            "inputs": {
+                                "variables": [
+                                    {
+                                        "name": "HelpLinkContent",
+                                        "type": "string"
+                                    }
+                                ]
+                            }
+                        },
+                        "Initialize_variable_CSV": {
+                            "runAfter": {
+                                "Run_query_and_list_results": [
+                                    "Succeeded"
+                                ]
+                            },
+                            "type": "InitializeVariable",
+                            "inputs": {
+                                "variables": [
+                                    {
+                                        "name": "CSV",
+                                        "type": "array"
+                                    }
+                                ]
+                            }
+                        },
+                        "Open_AI_API_Key": {
+                            "runAfter": {
+                                "Initialize_variable_CSV": [
+                                    "Succeeded"
+                                ]
+                            },
+                            "type": "InitializeVariable",
+                            "inputs": {
+                                "variables": [
+                                    {
+                                        "name": "Api-Key",
+                                        "type": "string",
+                                        "value": "replace with your OpenAI api key"
+                                    }
+                                ]
+                            }
+                        },
+                        "Question": {
+                            "runAfter": {
+                                "Open_AI_API_Key": [
+                                    "Succeeded"
+                                ]
+                            },
+                            "type": "InitializeVariable",
+                            "inputs": {
+                                "variables": [
+                                    {
+                                        "name": "Question",
+                                        "type": "string"
+                                    }
+                                ]
+                            }
+                        },
+                        "Redirection_Link_Variable": {
+                            "runAfter": {
+                                "Question": [
+                                    "Succeeded"
+                                ]
+                            },
+                            "type": "InitializeVariable",
+                            "inputs": {
+                                "variables": [
+                                    {
+                                        "name": "Redirection Link",
+                                        "type": "string"
+                                    }
+                                ]
+                            }
+                        },
+                        "Run_query_and_list_results": {
+                            "runAfter": {},
+                            "type": "ApiConnection",
+                            "inputs": {
+                                "host": {
+                                    "connection": {
+                                        "name": "@parameters('$connections')['azuremonitorlogs']['connectionId']"
+                                    }
+                                },
+                                "method": "post",
+                                "body": "let selectedCategories = dynamic([]);\nlet selectedTotSev = dynamic([]);\nSqlAssessment_CL\n| extend asmt = parse_csv(RawData)\n//| where asmt[11] =~ \"MSSQLSERVER\" \n| extend\n    AsmtId=tostring(asmt[1]),\n    CheckId=tostring(asmt[2]),\n    DisplayString=asmt[3],\n    Description=tostring(asmt[4]),\n    HelpLink=asmt[5],\n    TargetType=case(asmt[6] == 1, \"Server\", asmt[6] == 2, \"Database\", \"\"),\n    TargetName=tostring(asmt[7]), \n    Severity=case(asmt[8] == 30, \"High\", asmt[8] == 20, \"Medium\", asmt[8] == 10, \"Low\", asmt[8] == 0, \"Information\", asmt[8] == 1, \"Warning\", asmt[8] == 2, \"Critical\", \"Passed\"),\n    Message=tostring(asmt[9]),\n    TagsArr=split(tostring(asmt[10]), \",\"),\n    Sev = toint(asmt[8])\n| where isnotempty(AsmtId)  \n    and (set_has_element(dynamic(['*']), CheckId) or \"'*'\" == \"'*'\")\n    and (set_has_element(dynamic(['*']), TargetName) or \"'*'\" == \"'*'\")\n    and set_has_element(dynamic([30, 20, 10, 0]), Sev)\n    and (array_length(set_intersect(TagsArr, dynamic(['*']))) > 0 or \"'*'\" == \"'*'\")\n    and (CheckId == '''' and Sev == 0 or \"''\" == \"''\")\n| extend Category = case(\n                        array_length(set_intersect(TagsArr, dynamic([\"CPU\", \"IO\", \"Storage\"]))) > 0,\n                        '0',\n                        array_length(set_intersect(TagsArr, dynamic([\"TraceFlag\", \"Backup\", \"DBCC\", \"DBConfiguration\", \"SystemHealth\", \"Traces\", \"DBFileConfiguration\", \"Configuration\", \"Replication\", \"Agent\", \"Security\", \"DataIntegrity\", \"MaxDOP\", \"PageFile\", \"Memory\", \"Performance\", \"Statistics\"]))) > 0,\n                        '1',\n                        array_length(set_intersect(TagsArr, dynamic([\"UpdateIssues\", \"Index\", \"Naming\", \"Deprecated\", \"masterDB\", \"QueryOptimizer\", \"QueryStore\", \"Indexes\"]))) > 0,\n                        '2',\n                        '3'\n                    )\n| where (Sev >= 0 and array_length(selectedTotSev) == 0 or Sev in (selectedTotSev))\n    and (Category in (selectedCategories) or array_length(selectedCategories) == 0)\n| project\n    TargetType,\n    TargetName,\n    Severity,\n    Message,\n    Tags=strcat_array(array_slice(TagsArr, 1, -1), ', '),\n    CheckId,\n    Description,\n    HelpLink = tostring(HelpLink),\n    SeverityCode = toint(Sev)\n| order by SeverityCode desc, TargetType desc, TargetName asc\n| project-away SeverityCode ",
+                                "path": "/queryData",
+                                "queries": {
+                                    "subscriptions": "replacewithsubid",
+                                    "resourcegroups": "replacewithRG",
+                                    "resourcetype": "Log Analytics Workspace",
+                                    "resourcename": "replacewithRN",
+                                    "timerange": "Last 24 hours"
+                                }
+                            }
+                        },
+                        "Send_an_email_(V2)": {
+                            "runAfter": {
+                                "ComposeMailMessage": [
+                                    "Succeeded"
+                                ]
+                            },
+                            "type": "ApiConnection",
+                            "inputs": {
+                                "host": {
+                                    "connection": {
+                                        "name": "@parameters('$connections')['office365']['connectionId']"
+                                    }
+                                },
+                                "method": "post",
+                                "body": {
+                                    "To": "replace with email to send to",
+                                    "Subject": "Sql BPA Result - OpenAI comment",
+                                    "Body": "<p>@{outputs('ComposeMailMessage')}</p>",
+                                    "Attachments": [
+                                        {
+                                            "Name": "Sql-BPA-Result@{formatDateTime(convertTimeZone(utcNow(),'UTC','Romance Standard Time'), 'yyyy-MM-ddTHH.mm')}.html",
+                                            "ContentBytes": "@{base64(variables('HTML-custom'))}"
+                                        },
+                                        {
+                                            "Name": "Sql-BPA-Result@{formatDateTime(convertTimeZone(utcNow(),'UTC','Romance Standard Time'), 'yyyy-MM-ddTHH.mm')}.csv",
+                                            "ContentBytes": "@{base64(body('Create_CSV_table'))}"
+                                        }
+                                    ],
+                                    "Importance": "Normal"
+                                },
+                                "path": "/v2/Mail"
+                            }
+                        },
+                        "Create_CSV_table": {
+                            "runAfter": {
+                                "For_eachSQLResult": [
+                                    "Succeeded",
+                                    "TimedOut",
+                                    "Skipped",
+                                    "Failed"
+                                ]
+                            },
+                            "type": "Table",
+                            "inputs": {
+                                "from": "@variables('CSV')",
+                                "format": "CSV"
+                            }
+                        }
+                    },
+                    "outputs": {}
+                },
+                "parameters": {
+                    "$connections": {
+                        "value": {
+                            
+                    }
+                }
+            }
+        }
+    }
+  ]
+}
