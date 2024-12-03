@@ -147,4 +147,4 @@ Before <br>
 After <br>
 ![Sentinel Add Content](./images/send-email2.jpg)
 
-Now save your LogicApp and __Enable__
+Now save your LogicApp and __Enable__ it.

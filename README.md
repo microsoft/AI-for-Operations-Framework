@@ -35,7 +35,7 @@ Explore detailed resources and guides on key Azure technologies and OpenAI Landi
  
 This template can be used for the deployment of a Logic App of SQL BPA with OpenAI report.
  
-<a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fsim-1one%2FOpenAI-CoreIntegration%2Fmain%2FArc-SQL%2520BPA%2FSQLBPA-V2.json" target="_blank">
+<a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fmicrosoft%2FAI-for-Operations-Framework%2Fmain%2FArc-SQL%2520BPA%2FSQLBPA-V2.json" target="_blank">
 <img src="https://aka.ms/deploytoazurebutton"/>
 </a>
 
@@ -45,7 +45,7 @@ This template can be used for the deployment of a Logic App of SQL BPA with Open
 
 This template can be used for the deployment of a Logic App to send UpdateManager report with OpenAI Comment of Pending security fix.
 
-<a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fsim-1one%2FOpenAI-CoreIntegration%2Fmain%2FUpdateManagement%2FUpdateManagement.json" target="_blank">
+<a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fmicrosoft%2FAI-for-Operations-Framework%2Fmain%2FUpdateManagement%2FUpdateManagement.json" target="_blank">
 <img src="https://aka.ms/deploytoazurebutton"/>
 </a>
 
@@ -53,7 +53,7 @@ This template can be used for the deployment of a Logic App to send UpdateManage
 
 This template can be used for the deployment of a Logic App to send Monthly Cost Monitor report with OpenAI Comment.
 
-<a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fsim-1one%2FOpenAI-CoreIntegration%2Fmain%2FCostMonthlyCheck%2FCostMonthlyCheck.json" target="_blank">
+<a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fmicrosoft%2FAI-for-Operations-Framework%2Fmain%2FCostMonthlyCheck%2FCostMonthlyCheck.json" target="_blank">
 <img src="https://aka.ms/deploytoazurebutton"/>
 </a>
 
@@ -61,23 +61,10 @@ This template can be used for the deployment of a Logic App to send Monthly Cost
 
 This template can be used for the deployment of a Logic App to monitor anomalies on AD and other scenario.
 
-<a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fsim-1one%2FOpenAI-CoreIntegration%2Fmain%2FAnomaliesDetection%2FAnomaliesDetection.json" target="_blank">
+<a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fmicrosoft%2FAI-for-Operations-Framework%2Fmain%2FAnomaliesDetection%2FAnomaliesDetection.json" target="_blank">
 <img src="https://aka.ms/deploytoazurebutton"/>
 </a>
 
-
-## Contributing
-
-Microsoft VBD Azure AI for Operation Framework is designed to offer customers customizable solutions that leverage the power of Microsoft's Logic Apps and the advanced AI capabilities of OpenAI. This versatile Business Development Framework enables seamless integration with a variety of Microsoft services, including Azure ARC and Sentinel, enhancing security, scalability, and operational efficiency. Through this platform, users can create robust, intelligent applications capable of dynamically responding to evolving business and security needs.
-
-This project has adopted the [Microsoft Open Source Code of Conduct](https://opensource.microsoft.com/codeofconduct/).
-For more information see the [Code of Conduct FAQ](https://opensource.microsoft.com/codeofconduct/faq/) or
-contact:
-- [siverza@microsoft.com](mailto:siverza@microsoft.com) | [LinkedIn](https://www.linkedin.com/in/simone-verza/)
-- [tommasosacco@microsoft.com](mailto:tommasosacco@microsoft.com) | [LinkedIn](https://www.linkedin.com/in/tommasosaccoit/) 
-- [saverio.lorenzini@microsoft.com](mailto:saverio.lorenzini@microsoft.com) | [LinkedIn](https://www.linkedin.com/in/saveriolorenzini/)
-- [adegregorio@microsoft.com](mailto:adegregorio@microsoft.com) | [LinkedIn](https://www.linkedin.com/in/andreadegregorioit/)
-- [gianluca.derossi@microsoft.com](mailto:gianluca.derossi@microsoft.com) | [LinkedIn](https://www.linkedin.com/in/gderossi/)
 
 ## Contributing
 
