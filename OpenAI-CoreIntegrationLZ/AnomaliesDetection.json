@@ -1,0 +1,472 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "workflows_OpenAIAnomalyDetectionAD_gen_name": {
+            "defaultValue": "OpenAIAnomalyDetectionAD",
+            "type": "String"
+        },
+        "connections_azuremonitorlogs_1_externalid": {
+            "defaultValue": "[concat('/subscriptions/', subscription().subscriptionId, '/resourceGroups/', resourceGroup().name, '/providers/Microsoft.Web/connections/office365')]",
+            "type": "String"
+        },
+        "location": {
+            "defaultValue": "westeurope",
+            "type": "String"
+        }
+    },
+    "variables": {},
+    "resources": [
+        {
+            "type": "Microsoft.Logic/workflows",
+            "apiVersion": "2017-07-01",
+            "name": "[parameters('workflows_OpenAIAnomalyDetectionAD_gen_name')]",
+            "location": "[resourceGroup().location]",
+            "identity": {
+                "type": "SystemAssigned"
+            },
+            "properties": {
+                "state": "Disabled",
+                "definition": {
+                    "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+                    "contentVersion": "1.0.0.0",
+                    "parameters": {
+                        "$connections": {
+                            "defaultValue": {},
+                            "type": "Object"
+                        }
+                    },
+                    "triggers": {
+                        "Recurrence": {
+                            "recurrence": {
+                                "frequency": "Day",
+                                "interval": 1,
+                                "timeZone": "W. Europe Standard Time",
+                                "schedule": {
+                                    "hours": [
+                                        "9"
+                                    ]
+                                }
+                            },
+                            "evaluatedRecurrence": {
+                                "frequency": "Day",
+                                "interval": 1,
+                                "timeZone": "W. Europe Standard Time",
+                                "schedule": {
+                                    "hours": [
+                                        "9"
+                                    ]
+                                }
+                            },
+                            "type": "Recurrence"
+                        }
+                    },
+                    "actions": {
+                        "Api-Key": {
+                            "runAfter": {
+                                "Run_query_and_list_results_V2_(Preview)": [
+                                    "Succeeded"
+                                ]
+                            },
+                            "type": "InitializeVariable",
+                            "inputs": {
+                                "variables": [
+                                    {
+                                        "name": "Api-Key",
+                                        "type": "string",
+                                        "value": "replace with your OpenAI api key"
+                                    }
+                                ]
+                            }
+                        },
+                        "Compose": {
+                            "runAfter": {
+                                "Clean_Result_III": [
+                                    "Succeeded"
+                                ]
+                            },
+                            "type": "Compose",
+                            "inputs": "<!DOCTYPE html>\n<html>\n<p><strong>Sistema automatico di segnalazione anomalie in ambiente AD- SiverzaLab Environment</strong><br>\n<br>\nSalve, a seguito di un analisi all'interno dell'infrastruttura monitorata, è stato evidenziata la seguente anomalia:<br></p>\n-------------------------------------------------------------------------------------<br>\n</br>\n@{variables('ReportIII')}\n<br>\n</br>\n<br>\n<p><h5><strong>\n(*) Il sistema genera i dati sfruttando l'OpenAI pertando protrebbero verificarsi delle anomalie nel testo inerenti alla formattazione.<br></strong></p></h5>\n<img src=\"?width=350 height=100\" alt=\"\" />\n\n</html>"
+                        },
+                        "For_each_result": {
+                            "foreach": "@body('Run_query_and_list_results_V2_(Preview)')?['value']",
+                            "actions": {
+                                "Update_variable_Question": {
+                                    "type": "SetVariable",
+                                    "inputs": {
+                                        "name": "Question",
+                                        "value": "E' stata identificata la seguente anomalia da un sistema di monitoraggio. Dai qualche info in più su quando è stato identificato il messaggio, che EventID è con informazioni relative all'errore e la risorsa di riferimento, nient'altro:TimeGenerated=\n@{item()?['TimeGenerated']};@{item()?['ActualUsage']};@{item()?['ExpectedUsage']};@{item()?['AnomalyScore']};EvendID=@{item()?['EventID']};DC=@{item()?['Computer']}\nSegui questo esempio e usa \";\" come separatore:\nIl giorno 24 novembre 2024 alle ore 15 è stata segnalata un'anomalia sul sistema @{item()?['Computer']} con eventID @{item()?['EventID']}; L'event ID indica problemi di autenticazione utente;Alcuni step per il troublescooting:;Verifica Event Viewer; Verifica accessi anomali all'infrastruttura; Controlla le performance dell'applicazione;\n\n "
+                                    }
+                                },
+                                "Ask_to_OpenAI": {
+                                    "runAfter": {
+                                        "Update_variable_Question": [
+                                            "Succeeded"
+                                        ]
+                                    },
+                                    "type": "Http",
+                                    "inputs": {
+                                        "uri": "https://changeendpointname.openai.azure.com/openai/deployments/changemodelname/chat/completions?api-version=2024-02-15-preview",
+                                        "method": "POST",
+                                        "headers": {
+                                            "Content-Type": "application/json",
+                                            "api-key": "@variables('Api-Key')"
+                                        },
+                                        "body": {
+                                            "max_tokens": 600,
+                                            "temperature": 0.3,
+                                            "messages": [
+                                                {
+                                                    "content": "Sei un assistente che elenca le anomalie avvenute sui Domain Controllers di Microsoft Active Directory.",
+                                                    "role": "user"
+                                                },
+                                                {
+                                                    "content": "@{variables('Question')}",
+                                                    "role": "user"
+                                                }
+                                            ]
+                                        }
+                                    }
+                                },
+                                "Parse_OpenAI_response": {
+                                    "runAfter": {
+                                        "Ask_to_OpenAI": [
+                                            "Succeeded"
+                                        ]
+                                    },
+                                    "type": "ParseJson",
+                                    "inputs": {
+                                        "content": "@body('Ask_to_OpenAI')",
+                                        "schema": {
+                                            "properties": {
+                                                "body": {
+                                                    "properties": {
+                                                        "choices": {
+                                                            "items": {
+                                                                "properties": {
+                                                                    "content_filter_results": {
+                                                                        "properties": {
+                                                                            "hate": {
+                                                                                "properties": {
+                                                                                    "filtered": {
+                                                                                        "type": "boolean"
+                                                                                    },
+                                                                                    "severity": {
+                                                                                        "type": "string"
+                                                                                    }
+                                                                                },
+                                                                                "type": "object"
+                                                                            },
+                                                                            "self_harm": {
+                                                                                "properties": {
+                                                                                    "filtered": {
+                                                                                        "type": "boolean"
+                                                                                    },
+                                                                                    "severity": {
+                                                                                        "type": "string"
+                                                                                    }
+                                                                                },
+                                                                                "type": "object"
+                                                                            },
+                                                                            "sexual": {
+                                                                                "properties": {
+                                                                                    "filtered": {
+                                                                                        "type": "boolean"
+                                                                                    },
+                                                                                    "severity": {
+                                                                                        "type": "string"
+                                                                                    }
+                                                                                },
+                                                                                "type": "object"
+                                                                            },
+                                                                            "violence": {
+                                                                                "properties": {
+                                                                                    "filtered": {
+                                                                                        "type": "boolean"
+                                                                                    },
+                                                                                    "severity": {
+                                                                                        "type": "string"
+                                                                                    }
+                                                                                },
+                                                                                "type": "object"
+                                                                            }
+                                                                        },
+                                                                        "type": "object"
+                                                                    },
+                                                                    "finish_reason": {
+                                                                        "type": "string"
+                                                                    },
+                                                                    "index": {
+                                                                        "type": "integer"
+                                                                    },
+                                                                    "message": {
+                                                                        "properties": {
+                                                                            "content": {
+                                                                                "type": "string"
+                                                                            },
+                                                                            "role": {
+                                                                                "type": "string"
+                                                                            }
+                                                                        },
+                                                                        "type": "object"
+                                                                    }
+                                                                },
+                                                                "required": [
+                                                                    "index",
+                                                                    "finish_reason",
+                                                                    "message",
+                                                                    "content_filter_results"
+                                                                ],
+                                                                "type": "object"
+                                                            },
+                                                            "type": "array"
+                                                        },
+                                                        "created": {
+                                                            "type": "integer"
+                                                        },
+                                                        "id": {
+                                                            "type": "string"
+                                                        },
+                                                        "model": {
+                                                            "type": "string"
+                                                        },
+                                                        "object": {
+                                                            "type": "string"
+                                                        },
+                                                        "prompt_filter_results": {
+                                                            "items": {
+                                                                "properties": {
+                                                                    "content_filter_results": {
+                                                                        "properties": {
+                                                                            "hate": {
+                                                                                "properties": {
+                                                                                    "filtered": {
+                                                                                        "type": "boolean"
+                                                                                    },
+                                                                                    "severity": {
+                                                                                        "type": "string"
+                                                                                    }
+                                                                                },
+                                                                                "type": "object"
+                                                                            },
+                                                                            "self_harm": {
+                                                                                "properties": {
+                                                                                    "filtered": {
+                                                                                        "type": "boolean"
+                                                                                    },
+                                                                                    "severity": {
+                                                                                        "type": "string"
+                                                                                    }
+                                                                                },
+                                                                                "type": "object"
+                                                                            },
+                                                                            "sexual": {
+                                                                                "properties": {
+                                                                                    "filtered": {
+                                                                                        "type": "boolean"
+                                                                                    },
+                                                                                    "severity": {
+                                                                                        "type": "string"
+                                                                                    }
+                                                                                },
+                                                                                "type": "object"
+                                                                            },
+                                                                            "violence": {
+                                                                                "properties": {
+                                                                                    "filtered": {
+                                                                                        "type": "boolean"
+                                                                                    },
+                                                                                    "severity": {
+                                                                                        "type": "string"
+                                                                                    }
+                                                                                },
+                                                                                "type": "object"
+                                                                            }
+                                                                        },
+                                                                        "type": "object"
+                                                                    },
+                                                                    "prompt_index": {
+                                                                        "type": "integer"
+                                                                    }
+                                                                },
+                                                                "required": [
+                                                                    "prompt_index",
+                                                                    "content_filter_results"
+                                                                ],
+                                                                "type": "object"
+                                                            },
+                                                            "type": "array"
+                                                        },
+                                                        "usage": {
+                                                            "properties": {
+                                                                "completion_tokens": {
+                                                                    "type": "integer"
+                                                                },
+                                                                "prompt_tokens": {
+                                                                    "type": "integer"
+                                                                },
+                                                                "total_tokens": {
+                                                                    "type": "integer"
+                                                                }
+                                                            },
+                                                            "type": "object"
+                                                        }
+                                                    },
+                                                    "type": "object"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    }
+                                },
+                                "For_each": {
+                                    "foreach": "@outputs('Parse_OpenAI_response')?['body']?['choices']",
+                                    "actions": {
+                                        "Append_to_array_variable": {
+                                            "type": "AppendToArrayVariable",
+                                            "inputs": {
+                                                "name": "Anomalies",
+                                                "value": "@items('For_each')?['message']?['content']"
+                                            }
+                                        }
+                                    },
+                                    "runAfter": {
+                                        "Parse_OpenAI_response": [
+                                            "Succeeded"
+                                        ]
+                                    },
+                                    "type": "Foreach"
+                                }
+                            },
+                            "runAfter": {
+                                "Set_Variable_Anomaly_Detection": [
+                                    "Succeeded"
+                                ]
+                            },
+                            "type": "Foreach",
+                            "runtimeConfiguration": {
+                                "concurrency": {
+                                    "repetitions": 1
+                                }
+                            }
+                        },
+                        "Run_query_and_list_results_V2_(Preview)": {
+                            "runAfter": {},
+                            "type": "ApiConnection",
+                            "inputs": {
+                                "host": {
+                                    "connection": {
+                                        "name": "@parameters('$connections')['azuremonitorlogs-1']['connectionId']"
+                                    }
+                                },
+                                "method": "post",
+                                "body": {
+                                    "query": "let starttime = 7d; \nlet endtime = 0d;\nlet timeframe = 60m;\nEvent \n| where TimeGenerated between (startofday(ago(starttime)) .. startofday(ago(endtime))) \n| where Computer startswith \"DC\"\n| where RenderedDescription contains \"error\" \n| summarize count() by bin(TimeGenerated, 60s), Computer, EventID \n| make-series ActualUsage=avg(count_) default = 0 on TimeGenerated from startofday(ago(starttime)) \tto startofday(ago(endtime)) step timeframe by Computer, EventID \n| extend(Anomalies, AnomalyScore, ExpectedUsage) = series_decompose_anomalies(ActualUsage) \n| mv-expand\n    ActualUsage to typeof(double),\n    TimeGenerated to typeof(datetime),\n    Anomalies to typeof(double),\n    AnomalyScore to typeof(double),\n    ExpectedUsage to typeof(long)\n| where abs(AnomalyScore) > 7 and abs(ActualUsage - ExpectedUsage) / ActualUsage > 0.5 \n| project TimeGenerated, ActualUsage, ExpectedUsage, abs(AnomalyScore), EventID, Computer\n| sort by abs(AnomalyScore) desc",
+                                    "timerangetype": "3"
+                                },
+                                "path": "/queryDataV2",
+                                "queries": {
+                                    "subscriptions": "replacewithsubid",
+                                    "resourcegroups": "replacewithR",
+                                    "resourcetype": "Log Analytics Workspace",
+                                    "resourcename": "replacewithRN"
+                                }
+                            }
+                        },
+                        "Set_Variable_Question": {
+                            "runAfter": {
+                                "Api-Key": [
+                                    "Succeeded"
+                                ]
+                            },
+                            "type": "InitializeVariable",
+                            "inputs": {
+                                "variables": [
+                                    {
+                                        "name": "Question",
+                                        "type": "string"
+                                    }
+                                ]
+                            }
+                        },
+                        "Set_Variable_Anomaly_Detection": {
+                            "runAfter": {
+                                "Set_Variable_Question": [
+                                    "Succeeded"
+                                ]
+                            },
+                            "type": "InitializeVariable",
+                            "inputs": {
+                                "variables": [
+                                    {
+                                        "name": "Anomalies",
+                                        "type": "array"
+                                    }
+                                ]
+                            }
+                        },
+                        "Clean_Result_I": {
+                            "runAfter": {
+                                "For_each_result": [
+                                    "Succeeded"
+                                ]
+                            },
+                            "type": "InitializeVariable",
+                            "inputs": {
+                                "variables": [
+                                    {
+                                        "name": "Report",
+                                        "type": "string",
+                                        "value": "@replace(string(variables('Anomalies')), '[\"','<br>')"
+                                    }
+                                ]
+                            }
+                        },
+                        "Clean_Result_II": {
+                            "runAfter": {
+                                "Clean_Result_I": [
+                                    "Succeeded"
+                                ]
+                            },
+                            "type": "InitializeVariable",
+                            "inputs": {
+                                "variables": [
+                                    {
+                                        "name": "ReportII",
+                                        "type": "string",
+                                        "value": "@replace(variables('Report'), '\",\"','<br>')"
+                                    }
+                                ]
+                            }
+                        },
+                        "Clean_Result_III": {
+                            "runAfter": {
+                                "Clean_Result_II": [
+                                    "Succeeded"
+                                ]
+                            },
+                            "type": "InitializeVariable",
+                            "inputs": {
+                                "variables": [
+                                    {
+                                        "name": "ReportIII",
+                                        "type": "string",
+                                        "value": "@replace(variables('ReportII'), '\"]','<br>')"
+                                    }
+                                ]
+                            }
+                        }
+                    },
+                    "outputs": {}
+                },
+                "parameters": {
+                    "$connections": {
+                        "value": {
+                            
+                        }
+                    }
+                }
+            }
+        }
+    ]
+}

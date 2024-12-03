@@ -1,0 +1,526 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "workflows_SQL_BPA_Generalized_name": {
+            "defaultValue": "OpenAI-SQL-BPA",
+            "type": "String"
+        },
+        "connections_azuremonitorlogs_externalid": {
+            "defaultValue": "/subscriptions/replacewithsubid/resourceGroups/replacewithRG/providers/Microsoft.Web/connections/azuremonitorlogs",
+            "type": "String"
+        },
+        "connections_office365_externalid": {
+            "defaultValue": "/subscriptions/replacewithsubid/resourceGroups/replacewithRG/providers/Microsoft.Web/connections/office365",
+            "type": "String"
+        }
+    },
+    "variables": {},
+    "resources": [
+        {
+            "type": "Microsoft.Logic/workflows",
+            "apiVersion": "2017-07-01",
+            "name": "[parameters('workflows_SQL_BPA_Generalized_name')]",
+            "location": "[resourceGroup().location]",
+            "identity": {
+                "type": "SystemAssigned"
+            },
+            "properties": {
+                "state": "Disabled",
+                "definition": {
+                    "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+                    "contentVersion": "1.0.0.0",
+                    "parameters": {
+                        "$connections": {
+                            "defaultValue": {},
+                            "type": "Object"
+                        },
+                        "CompanyLogo": {
+                            "defaultValue": "data:image/png;base64,/9j/4AAQSkZJRgABAQEAkACQAAD/4QAiRXhpZgAATU0AKgAAAAgAAQESAAMAAAABAAEAAAAAAAD/2wBDAAIBAQIBAQICAgICAgICAwUDAwMDAwYEBAMFBwYHBwcGBwcICQsJCAgKCAcHCg0KCgsMDAwMBwkODw0MDgsMDAz/2wBDAQICAgMDAwYDAwYMCAcIDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAz/wAARCABSAUYDASIAAhEBAxEB/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAAAgEDAwIEAwUFBAQAAAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkKFhcYGRolJicoKSo0NTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4+Tl5ufo6erx8vP09fb3+Pn6/8QAHwEAAwEBAQEBAQEBAQAAAAAAAAECAwQFBgcICQoL/8QAtREAAgECBAQDBAcFBAQAAQJ3AAECAxEEBSExBhJBUQdhcRMiMoEIFEKRobHBCSMzUvAVYnLRChYkNOEl8RcYGRomJygpKjU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6goOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4uPk5ebn6Onq8vP09fb3+Pn6/9oADAMBAAIRAxEAPwD9/KKKKACmzP5abuw5NOqj4jvIbDSpZ7i4t7W3gBkllmk8tI0UEsxbIwAATnPQUA9FdnxR/wAFn/8AgqFrn/BOnwX4LtPCuh2OreLPHVxdfZLjUFMmn6fBbCHz2dEdJHlY3ESRgfKCWZ+F2v8Ak3F/wXk/av0i8jmk+J8eoRqykwXHhrSRG4OTgmO2Ru+CVI5Jwewj/wCCsH/BQPVv28/2lb6SK8s28C+Cb680zwtHZKBHeQCcq2oO+cu9yIo2HRBGkWFDby3ypdWgYdMDsAMBfoO3XtX7bwvwlhoYCFbF01KpLXXXTpo9D8j4g4irVMY4UJtQWmml++q1P2S/ZC/4KvfEf9pj4Tw603iAWepW07Weo20drbssEo6EZiB2sNpHXGcZOK9QH7a3xKI/5GaTp/z5Wv8A8ar8dv2Gf2iLj9n/AOL8NlcT2sPh3xLKkGoPcnatuQfllD5CrgkBi2RtJzzgj9K/tm8Bht2kDbg8Y7Yr6vD5Dlkl71CP/gMf8j8B4qzjPsDi2qeLqeze3vy/zPW3/bZ+Jat/yM0n/gFa/wDxqmn9tz4l/wDQzSf+AVr/APGq8ie6BbtUclwP9n862fDeWPahH/wFfokfMx4vz7ri6n/gUv8AM9cl/bW+J7wOqeKpImZNoddPtMof7wzERuPfIwfQV9MfsOftW3Xx5sdW0HXlSTxP4WW3a5u7eLZb6lBMZRFOP4Q++CZHVCRuj3gKsiKvwP8Aaz7VsfCv4waj8BfiTZ+NNHtbK81KxgNlNHJbbzcWU01vLcRD5kZWKQAJtJCuE+VlVkPzHFXB+Gq4FzwlJRnHXRWPvvDvxDzHDZrGlmNeU6c7K0ndLz1enyP1kh+70HX1qSsfwV4s0/x14Z03V9JvbXUtL1S1ivbS7tZ1mguoZV3pIjqSrIykEMpww5HFbFfhHK02nuf2BGSklKOzCiiigoKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiig9KAI2dl/Ovz3/AODgH9te5/Z9/Zvh8DeG/FD6R408fM1tNbWiI1wNIaKWO5kJdGEKuXVFcMsm4ExHMchT9AdUfy7Y89evTkenPr07da/ma/4KR/tFt+1t+278QvGi3K3WlyapJpejyQ3j3NudPtD9nt3iLY2xzLGbnaBgSXMpGNxz9ZwXkrzHMOWXwQ95+fkfK8XZr9RwOjfNLRWPBTCyBV2sqquApYkLyeMdsDFNeEkVcMG3p/KmmMiv6KjRS91bJI/Dfbu7fcxdRsN3z7QQFIPXoSM/0r9If2OPi6vxT+AOjyNdrcanpUH9nX2T86yxgAM3uygN/wACr88rqDzU5FeifsZfGO7+DnxysbfzVGj+I5BY3qSMdik/6pwM4Dqx+8QcK7DvmsKlqc016Hi8R5eswwbS0lHVH6NNcfO3PGTjjtTGuM1S8/B/yP07fSmvOWr0FHXQ/G/ZtKz3WhcmuNnQ0yGZp5lTdGN7BcvgKM+uRjFUWl3VF59U43VmOMba3Pvf/glX8UJfE/wg1LwzeSWazeE79k06BZJHuItPnRJY/MLnjE32qNVQbAkCAAYBb6tRs1+Ovwy+N99+zl8RNO8cWLK76HuF6siu5u9PbZ9qhOwhiWVA64yBLFCxV9m1v160nUo9RtoZogzR3EYlViNp2tyODz+n9a/nDjbJZZfmEpL4ajbXzex/aHhjxNHNMphCd+emlF38ktTRByetLTYju5p1fGn6SFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABUdzIEt5Dzwp6Ak/gByfw5p7MFHJxjrWX4q8S6d4V0G/1HVLy0sdO0+3kubu4uZkihgiRSzu7OQqqFViSxAABJ4BpqLbsiZSUVd7Hwp/wX1/bS1T9mj9mLSvCPh3UpNP8AE3xMup7JrhVYTQabCqG8aNguwM3mwwcsGAuHdMGPcv4UuqyhdoK+WNu0jaEGBgDk5/iycnoK9I/an+P9x+1h+0t48+I91bNZv4u1Nb6K2eMJNaW6Qx28EUoHy+YlvFAjEEksmSTkmvPyvtX9J8EcO/2dl8ZS+Oer01S7H89cW8QfX8e1H4Y6LXR+ZVaLFNddtWmj3GkMDDtX2Xsz5f2q7lTrxtFewf8ABO79km3/AGzP2zPB3gW/t72fw/d3L6hrbWzOpgsbePzJtzoCY1k2pCGwuHnQBwzgjyeRWXhdu7rtORn15xjpk9eNp4r93f8Aggb+xfdfs1fso3finXrZYfEPxTuotYIyxkg02NCtjCw3FOVea4ztVgbva2Si7fhePM4/s7ActN+/PRW0a8z7Hg3K/r+L9/4I6u+z8jw/9qv4Mf8ADPXx217Q7U40edhf6QruWaK3mQN5THA4W4WaOMgcRpGMltzHzyaf5jtPfv1r7u/4Kifs0XHxZ8IaL4u0Wz1XUPEnhF2tfsFnH5pvbG6lhFyu1SG3RGOObcNzbY5VCnzMr+fNrqUWoW0c8UkM0dwokR42yjg8gr7VpwLnizDL4wm/firO7u/U/NfErhZ5Zms6lNfu5u6009DR+0n1/Wozc/7VUjd4/u1DJcA195GmfnXsy/NMzRttfY6jcGAyVI549/Trz2PQ/dv/AASK+K2o638PNe8D3S7tO8DizGmzm6kkKwziZVtQrZVEh8gBFQ7VWRUCr5e5/gETgHqOv510fwS+LkvwI+NfhfxpDayX66Dd5u7WN0R7q1kVoplBbjcqSNIq5Xe8aKWUHcPjeOsiWYZa/Zr34arTV+R+h+G3EEsqziDm/cneL101W5+0UbkyKPY1LWP4Q8TWPi7RbbUtMvLbUNPvIkmtrm3lEkM0bKCrKykqwI7qSK2FORX8zSTTaa1R/ZFOUZRUo7MKy/F3jjRfh/pDahr2saXolip2m5v7qO2hB9N7kDse9amc1+fPxns/D/hH/gqpea18ZtLeXwLqVlHa6Be6pZtLpKzCCHaGJGworGbOQwV5AzYGWHv8OZLHM69SnKTXJCU7RV5S5be7FXWrvfronoz5XjHiSeS4SliIQUvaVIU7yk4whz39+bSdoRtZ7atK6vc+5vA3xa8K/E9Zj4a8TeH/ABELbHnHTNRhu/Kz03eWxx+NdBXgem/su/s//Hrxbpfifw7pvgrU7zwzeLP5vhu6hFu0i/Mq3CW7bHwdrAMM/KBkqSp9D/aL17x54b+Fd5d/DbRdM8QeLEliFtZX7hIJELgSEkyxDIXJHzjkd+lYYrA4Z4iFDDSlFydmqiUFFt6Xle1urbUbLudWAzPGfVauKxkYTjBNxdFym5pJtpQ5bqWllFSm5Ptscl44/br8E/D/APaa0n4VXy6u3iDVmhiW4it1a0t5Zv8AUxu27flsryEIG9ckDJX2avif4c/tp/G7Tv2vPBfw9+JngrwP4fm8RKz7rRGmuVtyshykiXUqLl4sEEdunQ19ffEe81rTvh/rVx4chtLjXreyml0+K6jaSGadUJRGVWViGYAcMDzXfxBkqwUsPRSSc4JuSqKcZatcyaSUVdPS7tbfv5fCfEks0+t1eaTVOdlCVJ0pw91PlalJuTd007R32ta21RXh/wCwN+1VfftX/Bu41XXLfTdP8TaTqEtjqdlZo8SwEHMZ8uRmdcqccscsjdMYGBL+2B4m8Wft/wAXwp8K2Oh3nhrR7M3HiHUJIZZbi1dULMqMsgRfmaGP5lYhmbPTFcsuG8bHFV8HJJSoxlKeuiUet+t7q3e6sdkeM8sll+GzKEm4YiUYQSXvOUm0lbo00+btZ32Po+ivnz9rz9tq8+CHi7S/BHgfwvceOviHrUJuItPg3NHYRZwJJgg3EHBOMqAqlmZRjd5tH+3d8avgFr2mz/G/4W6fo/hPUZ1t5NX0OTzU04sQA0m2edep+6WQkZK7iMHpwfCOY4qhGvTUVzpuEXOKnNLrGLd3tppr0uceZ+IGUYDFTw1Zzfs7KpONOcqdNtJr2k4pxjo03d6dbH2ZRXmP7THjL4kaH8NbHUPhHoOh+LNauLuPfDfTqtubVkcmVWM8IJ3bMYc5DHg9R85/BL/gob8Wvj38K7iDwv4D0DXviJDq81rPFAz2+maXaJHEVmnMk2dzu8iovmrv8pyudhByy/hjF43DPF0ZQ5YtKV5xTjfrJNrljo9XvbQ6M241wGXY2OBxEanNOLlFxpylGdvswaT5p7e6rvVXsmfbVFfM37GH7avir4vfFrxR8N/iT4Z0/wAM+OvDcX2sx2DH7PLECgZSC8nzDzI2DK7K6vkYx82F4z+MP7X1h4s1aLR/hX4CutFhu5lsbia7iWSa3DkRu2dQXBKYJ+UcnoOlavhPFQxUsLWqU4NJSTlUjGMoy1TjJu0k12OePHmBqYKOOw1GtUTlKDjCjOU4Si7SjOCV4tPTU+tqK+Kf2Pv28/jF8e/2kYfCWteFvBzaDYmQazqWhRS3UNifJd4h9qS5lg+Z1VerZ+YDkHH0R+1R4s+KPhLwRYzfCfwvpHijXpb0Jcw6lMkcMFvsclxunhy28IBhjwTxWWYcM4rA42GAxE4KU0mnzrlSd7Xlstr69Gn1Nsn42wOaZbVzPB06jhSk4tezlzuUbXUYbyavbTqmujPTqq67r1j4X0e51HU7y107T7OMy3F1dTLDDAg5LO7EBVHqTivkLQ/+CgfxS+CnijTbX46fDBPDWh6pcLbf29pJZ7SydyQvmfvJUPQkgSBtqkhWxivb/wBt+eO6/Y1+I0sTrJHJ4euWR1O5WBjJBB7g0YjhvE4bFUaOItyVZJKcJKUXqk7NNq6vqnrt3LwPGGDx2FxFXCqSqUYtyp1ISpzWjavGSTs7OzV07PW6PSPCvi7SfHehQ6poeqafrOmXW7ybuxuUuIJdpKna6EqcMCDg8EEVoV88/wDBK3/kxXwT/wBvv/pZPX0NXn5zgY4LMK+Di7qnOUU315W1f8D0eGc2nmmUYXMqkVF1qcJtLZOUU7L0uFFfPv7U3xK/aE8I+P4bf4V+APDPiTw2tikk15qNwizfaCz7kVftcTbQoT+E5JPNZf7NX7dmt+Mviwvw6+KPgu5+H/jS4iabTy+77HqoXO4RFu/ysVKs6tsYbgQAe6HDOLqYP67QlCaS5nGM4ucUt24X5lbrpotWefW40wFDMP7OxUalNuSjGcqc1TlJ7KNS3K23otVd6LU9g+N/7RPg39nHRLHUvGesf2NZ6jc/ZLeT7JPceZLtLbcRI5HAJyQBx1rtI5BLGrLyrDIPtXxV/wAFvnEfwO8Fs3Cr4iBP/gPLWn4j/as/aUW3uPEnh34N6XceA7Yl7aK7Z/7YvLVSQJRCJlkVmUBgnkFhu6MOa9ahwj9ZyvD42hOMZVHUUuecYx91xUVG9tXd6Xe3Q8HF8ffUs9xWWYqnKUKcKUo+zpznP3+fncuW6UY8sdbLe2raPsSivNf2Uv2nNF/ay+EVr4q0eKSzfzDbX9jK4eSwuFALRlhjcMMrK2BuVgSFOVBXyWMwdbC15YbER5Zxdmn0aPvMtzLDZhhaeNwc1OnUScWuqf4rzT1T0auejSOvlnPTHJzivzl/4OC/2zYPhN+zrbfCjQ7rb4p+Iiq9+lvctG9hpMU8TTCQIwZRcnMADjEkf2odFbH3r8VPitoHwZ+HOseKfEepQ6ToOg2sl7eXcgZhHEilyVVQWc4HCoGZjgAEkCv5vv20/wBpG4/a4/ai8YfEKSG6tbPXbuNdOs5jg2VlDD5ECbPMkVG2IjuEcgyvKQFDHP13AfD8syzGMpJ8kNW/NbHyvHOfxy/AOnFrnlpb1PJQhCDcSx2qpJHcZ5Hp1xjnpTXT5atFQaaYRiv6fjTUdEtLH85xxDk3J7kvh7SLO8lcXVx5bcbcttB61ur4Es3G4NIw/wB6ubaDKkA7c+hq9o3iFvD6jzGX7OTg7j0OCeOfY9vSuzD1qEE/bxVu/ZHmYzD16jvh5a6adzS1D4c2l9ptxAJZo/OXaSH5X3HHBxkZ9DX21Yf8FtPjppNhDa2d54TtbW3QRQwxaKqRxIowqqN5wAAB+FfPXxs/Z08c/s46pptn448L6p4dk1iFJrCScJLb3YbdhEniLQtINvzRhy6AruUblzxWCOqsp9GGCPqKxrZLkWdRjUnGFVR0TUr2+5nNHOM8yiTpKc6d+6tf70fWep/8Fyv2gEBxqnhkZB5/sdcjjg/e7HnHfPUVwnwK+L//AAsnw7cfbPstvq1vNK88ECiONQ7My+Wg6IM4A7Yx6V4HdxebF74rQ+DPi+H4dfEaO7uty2N0htJmxnaGKuG/BlH4VyrhLLcubqYCkoN72v8Aq2RjOIMbmdNQxlVztqrn1FJcVGZ+KqG5+XOeOOfr0qA3HH3qqx4nsraF8z5FMe7WJW+hHXH6jB/Ig/hmqDXWB940xrnNHInuioxktUffX/BHj9pGD7Hqfwr1aS3jurJ5dX0OZ5wHvY5naS6gCHHzRTFpMoACky/IpQlvvCGYSRKw6MoYZ96/E/8AZg+LenfA/wDaH8K+MtWtpLiz0O7aS4dEZ2gikhkt5ZsLknZFNI2MHOMdSCP2Y8DeL9N8f+F7DXNGv7fVNH1i2ivbG9t5BJBeQSoskcsbDhkZWUhh1B9MV/MviBkLy7MW4L3Kmqfn1P608NeJP7Syzkq/HT0+XQ21ORXnXxF+Mnwk1f7d4X8WeLPh3cNv+z3ek6rqtmzB/wC48MjZDD0IyK9EjORXkfxT/YN+EXxi1+fVvEHgfS7jUrpzJcXNvJNZSXDk5LuYHTcxPJY5J9a+XyqWCVbmx0pxitnTSbT+bX5n2GdxzJ4bly2NOU3uqrkotW1V4qT/AAasfGfx18M+A/2Zf2l/hz4i/Z/8TWN1q2tar/Z2o6Bo+rrqUToZIwUYK7OqybipRiRkArtK1+h3jn4meG/hhYQ3XiXxBofh21uJPKim1O+itI5XwTtVpGALYBOBzgVxvwY/Y3+GP7P+pC/8JeD9N0vUMELeO0l1cxhgQwWWZndQQSCFIyOK2Pjl+zn4N/aS0Cz0vxpo/wDbVjp9x9qgi+1z2/lybSu7MLoT8rEYJI5r6TPM9wOZVcNSqupKFNNSqSUXVkm7pWvb3dleT3ep8bwzwvmeT0sZiKEaMKlZxcaMHNUISirN35brn0cuWCWi0ep8a/tCfG3wXrX/AAVM+FPiGz8XeF7vQNO0wR3epw6rBJZ2rf6Xw8obYp+ZeCR94eor7k8DfE3w38T7Ca68M+IND8RWtvJ5Us2mX0V3HE+AdrNGxAOCDg84NeLf8OqvgJ/0If8A5W9R/wDkivTvgb+zl4M/Zs0G80zwVo39i2OoXH2q4j+1z3HmSbQu7MzuRwAMAgVXEWZ5Li8HQpYN1eejBQXNGCi1zOTbam2nq7WRHCWS8TYHM8TicxjQ9liJ88uSdRyi1BRSipU4pr3Ve76s+TvDviax/YJ/4KGfEJdcuYdK8F/EDSJtfs5JD5cMlxGTKYlY4Xfu+0KFHJMkY6sK7D/gkz4H1DU/A3jH4oa7C6az8StZlu1ZwebdGYgrn+EyySgdiEWvdvjv+yt4B/aYXTf+E38Pprf9j+Z9jb7XPbND5m3eMwuhIOxeDkcV13gvwbpnw78JaboOi2q2Ok6RbpaWlurMwijQBVXLEseB1JJPUkmqzLirD4jK/ZQjL6xUjThUk7crjTvy2d7ty9zmul8OhGVcDYvC559YnOLwdKdWrSir8yqVlFS5k1yqMG6jhZ39/VaH5/ftleBrvRv+ClUOoaz4y8SfDLQfF2mRW9l4osZXtoYnSFVaFp96KF3INw3fLvQsADmtXxF+y34L+KOnDQ9W/bCuvEVpeyoosLvxPBeRzybhsHltdEM27GOM5xivubx/8OdB+KvhmbRvEmj6frel3HL215CJY8jowz91hnhhgjsRXj2m/wDBMP4GaRrEN/b+BY47qCQTRsdWvmVWByDtM23g9sYFetgOOKKwtGnWnUpTpRUU4QpTT5dpXnaUXsnZtaXVrnh5v4Z4mWOxFfDU6VaniJuclVqV6bjzJKUUqd4yi7X1SetndWPSrjxd4V/Z68CaDpviHxRomh2tpaR6faz6tfw2f2ryo1XjewBbABIHTNfGn/BIL4veD/A2gePrXWvFHhvR77VtfT7HDe6lBbzXilSF8tXYFxuOBjPJ96+wPjr+zL4H/aW07T7Txton9tW+lyPNap9suLbymYAMcwuhOQB1zXn+j/8ABMD4GaBq9rfWngfybqymSeF/7Z1BtjoQynBnIOCBwRivIyjNsnp5ZiMLjXV9pXcXJxjBpcknJWvJPW+umnQ93iDh/iCrnGDxmVRoexwqlyqc6ik+eHI00oSWi2116nvlfDf7f/7bUfj3xnD8F/AfibQ9K/th/sniPxJdahHb2enRnPmQCZmC5ChvMwc/8s1y5YD7krwbxD/wTI+B/irX77VL/wAE/aL7UriS6uZf7Yv18yR2LM2FnAGWJOAABXncJ47K8Fi/rWZxlLlV4KKjJc3RyUpRululfV7ns8eZbnuYZd9SyOpCm5u05SlKL5Oqg4xlZy2vbRba7W/2T7/4N/BbwNo/gHwN448F6pdMSSttrVrPe6rclcySsqOWZiF6DO1VAHCivJP27fjr4q1D9qLwn8JdN8cL8K/Dusaeb/UfEbstu8hPm4SOZmXb/qgo2uhLyYJPAr2D4bf8E8vg98IvHGn+JPDvhD+z9a0qQyWtx/at7N5TFSpO2SZlPDEcg9a7P41fs5eCf2itIt7Hxp4ds9chtGLQNIzxTQE4zsljZXUHAyAwBwM9BXfRzjKqOb/Xn7StGSlzOpGDkpyvaajdxly6NKTSv6I8mpw7nlfh95UvZYeUXBQjSnU5HTi03CU+WM4c6Ti5RTdnfW7Pz0/b1+D+h/D/AOCrtpfx08WfEjUkvoGvNGudfXUoYYiGH2mWJGJjUOyKHfjdKq5ywr63+MvjnRPHX/BOLxZLomsaXrEVr4QME72N3HcLDILZcoxQnaw9DzXUaV+wH8ItC+HOr+FLHwbZ2uj68YzfqtzO1xcCORZEUzs5lCh1BADgVreBv2O/hx8Nvhjr3g3RfDv2Pw34n3f2nZ/b7qT7TuQIfneQuuVAHysPzr08w4ry/E4ehCUqkp0avOm4wXNF8l7qLVmrOyV+l328fJ+Bc2wePr4iEKMKdej7OUVOrJxknPlcXOL5k+ZczfLbW0XbXxP/AIJr/tFfD7wJ+xl4Q0vXPHXg3RtTtftfnWl9rVtbzxbruZhuR3DDKkEZHIINfRngv49+BfiPrP8AZ3h3xp4T17UPLMv2XTtXt7qbYMZbZG5OBkZOMcivJv8Ah1V8BP8AoQ//ACt6j/8AJFdb8GP2HPhb+z34xPiDwf4X/sjVjbva+f8A2ld3H7tyCy7ZZWXnaOcZ4ry8+xXD+MrV8bRlWVSpKUknGHLeTbs2pt217Nnr8J5fxdlmFwmWYiGGdGjGEHKM6rm4xSV0nTS5rLZtK/U+Wl+JHiL9sL9pjx/oviL4x3nwj8N+DNRawsNGsr5NMvNQVWkRnLF1ZseWGYtvAMigBRiuD13TvDfwh/b5+Et5D8WNQ8feHbaQmfXNZ1pLy006QF98C3O7y1wGjZkyCvmqT98V9xfGL9h34U/HzxMdZ8VeD7PUNVZQsl1FcT2cswAwN5hdN5AAALZIAA7VU8Z/sB/CLx74Z0HRdR8G2f8AZPhsTCwtrW5ntFjMuzzGYxOrOzbFJLEkkV9DguNMro8sVGcKbg4ShGFOyvBxclK6lNuWvvcu7u3sfLZt4b53ilVblTqVfaqpCpOpW5naqpqEoWcIRjBcq5ebZWim7rwH/gtPrFn4g/Z78B31ndWt9YXWvrJFcQyLJDMht5cMrAkFSO44r6C+In7Z3wx+G/w31C/k8ceEbu40/T2lisLXVoJrm5YLhY0jRixLNgcDjqcAE1qeMv2Qvh18QfhbongvWPDcd74Z8OBRp1m15cL9l2oUGJFkEhwpIyzHrWL8Ov8Agn38G/hVrMeoaP4C0lbyJg8cl7JNqBiYYIZRcO4VhgEEYIrwP7WyWrltDA4n2t6MqjVlBKSm00m3L3XaOtk7N9T6n+w+JMPndfNcH7D9/TpRlzSqPklTUruKUFzK8tLyi2kr2vp5n/wR++FOufDv9nDU9R17T7rTJ/FGsPqFtBcRNE5g8uNFk2sMgMQxBPVdpHBBJX1hRXzueZtPM8fVx1RKLm72XRbJfJI+u4XyGnkmVUcrpSclTVuZ6Ntttu3S7b06H5h/8HG/7RFjp3wf8H/Cm1u79dX17VV8QX0NvKgtnsbZZVWK4G7f81xJDKgClC1o+SpVQ35EmA7FHB21+z3/AAVP/wCCPHjT9tX4/wBh468F+IPDdjM2lR6XqFtrU01uiiF5HikhaGKUtuEzKwcLt2Arnewr5l/4hxvjj/0M3wr/APBnff8AyHX7N4fZ9kWX5WoV6yjUlrJO91+B+ScdZHnmYZm50qLlTjpG3/Dn58+V/smmvFkelfoQ3/BuL8cSP+Rn+Ff/AIM77/5Dprf8G4PxyI/5Gf4V/wDgzvv/AJDr7j/XjIf+gmP4/wCR8Z/qXny/5hpf18z89/ILdCPSvoz/AIJT/ssyftUftveDdMuNFu9V8N+H7geINbkVkW3ght/3kKzb+JI5blYYjCAWkVn4VVeRPeW/4Nw/jkF/5GT4Wt1/5id96H/pz5/ye1ffv/BKP/gm1L/wT++FOqR69c6HrHjnxJefaNS1GwhPlwQIoWK0jldVd41YPKWKJueZztFfI8Z8dZc8ulRy+opzmraX07/gfWcIcD5h9fjVx9JwhB316n0h4w8AaL8TPC19pOvaRp+u6PqEey5stQtVure6QEEK8Tgqw4BwR6dxX5UftLf8EG/iLa/EnxtrXw/vPCd94TmuJ9S0XSJbqW21LEm6QWSr5AgGHPlo7yqNu0uRhmP68xxeWoHpxSvF5nXFfivD/E2Y5NV9rgZ2fVPVP1R+wZ/wvl2cUvZYyF+zWjR/Mn4t8Gax4C8RXWj67pOqaHrFmypc6fqNpJa3VszKrKHjkAYEq6MOCCHUgsGBPN67ppljJx1Gfev6A/27f+CaPgf9uTR/tGox/wBh+MrKzNrpniO1Uma1Xf5ixzRhlW5hDbv3ch+XzJCjRs26vgDXP+Den4yTX12tr4l+G81uszLDLLfXkMlxHn5XZBbMEYjqoZgDkAkYJ/ozh3xYyvH4dRzOXsqnW9+V+j/Q/nbiDwpzTBYrmy2Lq0+nf5o+YvgT8QV8R+Fo9Pndv7Q02IRyBz/rE5CuOcntk/8A1q7RrrHevdvhh/wb9/GHwV4gmv7rxJ8OWLxeUEhv7wg/NnnNqK74/wDBFb4rn/mOeAf/AAOuv/kaun/XTIbv/aY/j/keK+Bc+bv9Un93/BPklrgGo5LjNfXB/wCCKXxXI/5DngD/AMD7v/5Gprf8EUPiwR/yHPAP/gfd/wDyNT/12yJf8xMfx/yF/qHn7/5hZ/cfIvmbyPm2jOTz6c197f8ABF/9pyxs9Gufg5fxzQX1nJd61ossau1u9q0sXmxMTkRyLNMzBRhWR8j5lcnz9/8Agid8WNv/ACHPAJ+l/df/ACNXpH7H3/BJzx58Ev2n/CfjbxJrfhFtN8Kvc3aR6e8tzczzS2k9qEXzIkEYC3DsXBJwuzaQ5ZPi+PM6yDM8tcYV1KpH4bf8Mfc+H+Q8QZZmSc6Eo05fFdaH6AWz7488fUd6dIMim2sXkQquNu0AYzx07VJX4Ar21P6MEX7o+lLRRTAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigD//2Q==",
+                            "type": "String"
+                        }
+                    },
+                    "triggers": {
+                        "Recurrence": {
+                            "recurrence": {
+                                "frequency": "Week",
+                                "interval": 1,
+                                "schedule": {
+                                    "hours": [
+                                        "9"
+                                    ],
+                                    "weekDays": [
+                                        "Sunday"
+                                    ]
+                                }
+                            },
+                            "evaluatedRecurrence": {
+                                "frequency": "Week",
+                                "interval": 1,
+                                "schedule": {
+                                    "hours": [
+                                        "9"
+                                    ],
+                                    "weekDays": [
+                                        "Sunday"
+                                    ]
+                                }
+                            },
+                            "type": "Recurrence"
+                        }
+                    },
+                    "actions": {
+                        "ComposeMailMessage": {
+                            "runAfter": {
+                                "FilePathVariabile": [
+                                    "Succeeded"
+                                ]
+                            },
+                            "type": "Compose",
+                            "inputs": "<!DOCTYPE html>\n<html>\n<p><strong>Automatic SQL Best Practice Assessment Report System</strong><br>\n<br>\nHi, below are the results of the SQL BPA with comments from the AI regarding the High severity<br></p>\n-------------------------------------------------------------------------------------<br>\n</br>\n<br>\n<p><h5><strong>\n(*) The system generates the data using OpenAI, therefore anomalies in the text relating to formatting or content may occur.<br></strong></p></h5>\n<img src=\"?width=400 height=150\" alt=\"\" />\n\n</html>"
+                        },
+                        "Create_HTML_table": {
+                            "runAfter": {
+                                "For_eachSQLResult": [
+                                    "Succeeded"
+                                ]
+                            },
+                            "type": "Table",
+                            "inputs": {
+                                "format": "HTML",
+                                "from": "@variables('CSV')"
+                            }
+                        },
+                        "FilePathVariabile": {
+                            "runAfter": {
+                                "HTML-custom": [
+                                    "Succeeded"
+                                ]
+                            },
+                            "type": "InitializeVariable",
+                            "inputs": {
+                                "variables": [
+                                    {
+                                        "name": "FilePath",
+                                        "type": "string"
+                                    }
+                                ]
+                            }
+                        },
+                        "For_eachSQLResult": {
+                            "foreach": "@body('Run_query_and_list_results')?['value']",
+                            "actions": {
+                                "Condition": {
+                                    "actions": {
+                                        "For_each_AI_Response": {
+                                            "foreach": "@body('Parse_JSON')?['choices']",
+                                            "actions": {
+                                                "Append_to_array_variable": {
+                                                    "runAfter": {
+                                                        "ComposeCSV": [
+                                                            "Succeeded"
+                                                        ]
+                                                    },
+                                                    "type": "AppendToArrayVariable",
+                                                    "inputs": {
+                                                        "name": "CSV",
+                                                        "value": "@outputs('ComposeCSV')"
+                                                    }
+                                                },
+                                                "ComposeCSV": {
+                                                    "runAfter": {},
+                                                    "type": "Compose",
+                                                    "inputs": {
+                                                        "HelpLink": "@{items('For_eachSQLResult')?['HelpLink']}",
+                                                        "Message": "@{items('For_eachSQLResult')?['Message']}",
+                                                        "OpenAI Message": "@{items('For_each_AI_Response')?['message']?['content']}",
+                                                        "Severity": "@{items('For_eachSQLResult')?['Severity']}",
+                                                        "TagetName": "@{items('For_eachSQLResult')?['TargetName']}"
+                                                    }
+                                                }
+                                            },
+                                            "runAfter": {
+                                                "Parse_JSON": [
+                                                    "Succeeded"
+                                                ]
+                                            },
+                                            "type": "Foreach"
+                                        },
+                                        "HTTP": {
+                                            "runAfter": {},
+                                            "type": "Http",
+                                            "inputs": {
+                                                "body": {
+                                                    "max_tokens": 1400,
+                                                    "messages": [
+                                                        {
+                                                            "content": "You are a System Administrator",
+                                                            "role": "user"
+                                                        },
+                                                        {
+                                                            "content": "@{variables('Question')}",
+                                                            "role": "user"
+                                                        }
+                                                    ]
+                                                },
+                                                "headers": {
+                                                    "api-key": "@variables('Api-Key')"
+                                                },
+                                                "method": "POST",
+                                                "uri": "https://changeendpointname.openai.azure.com/openai/deployments/changemodelname/chat/completions?api-version=2023-07-01-preview"
+                                            }
+                                        },
+                                        "Parse_JSON": {
+                                            "runAfter": {
+                                                "HTTP": [
+                                                    "Succeeded"
+                                                ]
+                                            },
+                                            "type": "ParseJson",
+                                            "inputs": {
+                                                "content": "@body('HTTP')",
+                                                "schema": {
+                                                    "properties": {
+                                                        "body": {
+                                                            "properties": {
+                                                                "choices": {
+                                                                    "items": {
+                                                                        "properties": {
+                                                                            "content_filter_results": {
+                                                                                "properties": {
+                                                                                    "hate": {
+                                                                                        "properties": {
+                                                                                            "filtered": {
+                                                                                                "type": "boolean"
+                                                                                            },
+                                                                                            "severity": {
+                                                                                                "type": "string"
+                                                                                            }
+                                                                                        },
+                                                                                        "type": "object"
+                                                                                    },
+                                                                                    "self_harm": {
+                                                                                        "properties": {
+                                                                                            "filtered": {
+                                                                                                "type": "boolean"
+                                                                                            },
+                                                                                            "severity": {
+                                                                                                "type": "string"
+                                                                                            }
+                                                                                        },
+                                                                                        "type": "object"
+                                                                                    },
+                                                                                    "sexual": {
+                                                                                        "properties": {
+                                                                                            "filtered": {
+                                                                                                "type": "boolean"
+                                                                                            },
+                                                                                            "severity": {
+                                                                                                "type": "string"
+                                                                                            }
+                                                                                        },
+                                                                                        "type": "object"
+                                                                                    },
+                                                                                    "violence": {
+                                                                                        "properties": {
+                                                                                            "filtered": {
+                                                                                                "type": "boolean"
+                                                                                            },
+                                                                                            "severity": {
+                                                                                                "type": "string"
+                                                                                            }
+                                                                                        },
+                                                                                        "type": "object"
+                                                                                    }
+                                                                                },
+                                                                                "type": "object"
+                                                                            },
+                                                                            "finish_reason": {
+                                                                                "type": "string"
+                                                                            },
+                                                                            "index": {
+                                                                                "type": "integer"
+                                                                            },
+                                                                            "message": {
+                                                                                "properties": {
+                                                                                    "content": {
+                                                                                        "type": "string"
+                                                                                    },
+                                                                                    "role": {
+                                                                                        "type": "string"
+                                                                                    }
+                                                                                },
+                                                                                "type": "object"
+                                                                            }
+                                                                        },
+                                                                        "required": [
+                                                                            "index",
+                                                                            "finish_reason",
+                                                                            "message",
+                                                                            "content_filter_results"
+                                                                        ],
+                                                                        "type": "object"
+                                                                    },
+                                                                    "type": "array"
+                                                                },
+                                                                "created": {
+                                                                    "type": "integer"
+                                                                },
+                                                                "id": {
+                                                                    "type": "string"
+                                                                },
+                                                                "model": {
+                                                                    "type": "string"
+                                                                },
+                                                                "object": {
+                                                                    "type": "string"
+                                                                },
+                                                                "prompt_filter_results": {
+                                                                    "items": {
+                                                                        "properties": {
+                                                                            "content_filter_results": {
+                                                                                "properties": {
+                                                                                    "hate": {
+                                                                                        "properties": {
+                                                                                            "filtered": {
+                                                                                                "type": "boolean"
+                                                                                            },
+                                                                                            "severity": {
+                                                                                                "type": "string"
+                                                                                            }
+                                                                                        },
+                                                                                        "type": "object"
+                                                                                    },
+                                                                                    "self_harm": {
+                                                                                        "properties": {
+                                                                                            "filtered": {
+                                                                                                "type": "boolean"
+                                                                                            },
+                                                                                            "severity": {
+                                                                                                "type": "string"
+                                                                                            }
+                                                                                        },
+                                                                                        "type": "object"
+                                                                                    },
+                                                                                    "sexual": {
+                                                                                        "properties": {
+                                                                                            "filtered": {
+                                                                                                "type": "boolean"
+                                                                                            },
+                                                                                            "severity": {
+                                                                                                "type": "string"
+                                                                                            }
+                                                                                        },
+                                                                                        "type": "object"
+                                                                                    },
+                                                                                    "violence": {
+                                                                                        "properties": {
+                                                                                            "filtered": {
+                                                                                                "type": "boolean"
+                                                                                            },
+                                                                                            "severity": {
+                                                                                                "type": "string"
+                                                                                            }
+                                                                                        },
+                                                                                        "type": "object"
+                                                                                    }
+                                                                                },
+                                                                                "type": "object"
+                                                                            },
+                                                                            "prompt_index": {
+                                                                                "type": "integer"
+                                                                            }
+                                                                        },
+                                                                        "required": [
+                                                                            "prompt_index",
+                                                                            "content_filter_results"
+                                                                        ],
+                                                                        "type": "object"
+                                                                    },
+                                                                    "type": "array"
+                                                                },
+                                                                "usage": {
+                                                                    "properties": {
+                                                                        "completion_tokens": {
+                                                                            "type": "integer"
+                                                                        },
+                                                                        "prompt_tokens": {
+                                                                            "type": "integer"
+                                                                        },
+                                                                        "total_tokens": {
+                                                                            "type": "integer"
+                                                                        }
+                                                                    },
+                                                                    "type": "object"
+                                                                }
+                                                            },
+                                                            "type": "object"
+                                                        }
+                                                    },
+                                                    "type": "object"
+                                                }
+                                            }
+                                        }
+                                    },
+                                    "runAfter": {
+                                        "SetVariableQuestion": [
+                                            "Succeeded"
+                                        ]
+                                    },
+                                    "expression": {
+                                        "and": [
+                                            {
+                                                "equals": [
+                                                    "@items('For_eachSQLResult')?['Severity']",
+                                                    "High"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "type": "If"
+                                },
+                                "SetVariableQuestion": {
+                                    "runAfter": {},
+                                    "type": "SetVariable",
+                                    "inputs": {
+                                        "name": "Question",
+                                        "value": "Please consider this output:\"@{items('For_eachSQLResult')?['Message']}\" and \"@{items('For_eachSQLResult')?['Description']}\".\nThis is the effected resource:\"@{items('For_eachSQLResult')?['TargetName']}\".\nPlease describe steps to fix issue. \n"
+                                    }
+                                }
+                            },
+                            "runAfter": {
+                                "Question": [
+                                    "Succeeded"
+                                ]
+                            },
+                            "type": "Foreach"
+                        },
+                        "HTML-custom": {
+                            "runAfter": {
+                                "Create_HTML_table": [
+                                    "Succeeded"
+                                ]
+                            },
+                            "type": "InitializeVariable",
+                            "inputs": {
+                                "variables": [
+                                    {
+                                        "name": "HTML-custom",
+                                        "type": "string",
+                                        "value": "<!DOCTYPE html>\n<html>\n<head>\n<style>\n {\n  font-family: Arial, Helvetica, sans-serif;\n  border-collapse: collapse;\n  width: 100%;\n}\ntd, #customers th {\n  border: 1px solid #ddd;\n  padding: 8px;\n}\ntr:nth-child(even){background-color: #f2f2f2;}\n tr:hover {background-color: #ddd;}\nth {\n  padding-top: 12px;\n  padding-bottom: 12px;\n  text-align: left;\n  background-color: #04AA6D;\n  color: white;\n}\ntd { white-space:pre }\n</style>\n</head>\n<body>\n\n<h1>SQL BPA-OpenAI Comment for severity High</h1>\n\n@{body('Create_HTML_table')}\n\n</body>\n</html>\n\n\n"
+                                    }
+                                ]
+                            }
+                        },
+                        "Initialize_variable": {
+                            "runAfter": {
+                                "Run_query_and_list_results": [
+                                    "Succeeded"
+                                ]
+                            },
+                            "type": "InitializeVariable",
+                            "inputs": {
+                                "variables": [
+                                    {
+                                        "name": "CSV",
+                                        "type": "array"
+                                    }
+                                ]
+                            }
+                        },
+                        "Open_AI_API_Key": {
+                            "runAfter": {
+                                "Initialize_variable": [
+                                    "Succeeded"
+                                ]
+                            },
+                            "type": "InitializeVariable",
+                            "inputs": {
+                                "variables": [
+                                    {
+                                        "name": "Api-Key",
+                                        "type": "string",
+                                        "value": "replace with your api key"
+                                    }
+                                ]
+                            }
+                        },
+                        "Question": {
+                            "runAfter": {
+                                "Open_AI_API_Key": [
+                                    "Succeeded"
+                                ]
+                            },
+                            "type": "InitializeVariable",
+                            "inputs": {
+                                "variables": [
+                                    {
+                                        "name": "Question",
+                                        "type": "string"
+                                    }
+                                ]
+                            }
+                        },
+                        "Run_query_and_list_results": {
+                            "runAfter": {},
+                            "type": "ApiConnection",
+                            "inputs": {
+                                "body": "let selectedCategories = dynamic([]);\nlet selectedTotSev = dynamic([]);\nSqlAssessment_CL\n| extend asmt = parse_csv(RawData)\n| where asmt[11] =~ \"MSSQLSERVER\" \n| extend\n    AsmtId=tostring(asmt[1]),\n    CheckId=tostring(asmt[2]),\n    DisplayString=asmt[3],\n    Description=tostring(asmt[4]),\n    HelpLink=asmt[5],\n    TargetType=case(asmt[6] == 1, \"Server\", asmt[6] == 2, \"Database\", \"\"),\n    TargetName=tostring(asmt[7]), \n    Severity=case(asmt[8] == 30, \"High\", asmt[8] == 20, \"Medium\", asmt[8] == 10, \"Low\", asmt[8] == 0, \"Information\", asmt[8] == 1, \"Warning\", asmt[8] == 2, \"Critical\", \"Passed\"),\n    Message=tostring(asmt[9]),\n    TagsArr=split(tostring(asmt[10]), \",\"),\n    Sev = toint(asmt[8])\n| where isnotempty(AsmtId)  \n    and (set_has_element(dynamic(['*']), CheckId) or \"'*'\" == \"'*'\")\n    and (set_has_element(dynamic(['*']), TargetName) or \"'*'\" == \"'*'\")\n    and set_has_element(dynamic([30, 20, 10, 0]), Sev)\n    and (array_length(set_intersect(TagsArr, dynamic(['*']))) > 0 or \"'*'\" == \"'*'\")\n    and (CheckId == '''' and Sev == 0 or \"''\" == \"''\")\n| extend Category = case(\n                        array_length(set_intersect(TagsArr, dynamic([\"CPU\", \"IO\", \"Storage\"]))) > 0,\n                        '0',\n                        array_length(set_intersect(TagsArr, dynamic([\"TraceFlag\", \"Backup\", \"DBCC\", \"DBConfiguration\", \"SystemHealth\", \"Traces\", \"DBFileConfiguration\", \"Configuration\", \"Replication\", \"Agent\", \"Security\", \"DataIntegrity\", \"MaxDOP\", \"PageFile\", \"Memory\", \"Performance\", \"Statistics\"]))) > 0,\n                        '1',\n                        array_length(set_intersect(TagsArr, dynamic([\"UpdateIssues\", \"Index\", \"Naming\", \"Deprecated\", \"masterDB\", \"QueryOptimizer\", \"QueryStore\", \"Indexes\"]))) > 0,\n                        '2',\n                        '3'\n                    )\n| where (Sev >= 0 and array_length(selectedTotSev) == 0 or Sev in (selectedTotSev))\n    and (Category in (selectedCategories) or array_length(selectedCategories) == 0)\n| project\n    TargetType,\n    TargetName,\n    Severity,\n    Message,\n    Tags=strcat_array(array_slice(TagsArr, 1, -1), ', '),\n    CheckId,\n    Description,\n    HelpLink = tostring(HelpLink),\n    SeverityCode = toint(Sev)\n| order by SeverityCode desc, TargetType desc, TargetName asc\n| project-away SeverityCode\n",
+                                "host": {
+                                    "connection": {
+                                        "name": "@parameters('$connections')['azuremonitorlogs']['connectionId']"
+                                    }
+                                },
+                                "method": "post",
+                                "path": "/queryData",
+                                "queries": {
+                                    "resourcegroups": "rg-arcserver-we-001",
+                                    "resourcename": "sqlassesment-law",
+                                    "resourcetype": "Log Analytics Workspace",
+                                    "subscriptions": "c9a15ee2-6563-4ece-a9ef-d8a5e9f2bad6",
+                                    "timerange": "Last 24 hours"
+                                }
+                            }
+                        },
+                        "Send_an_email_(V2)": {
+                            "runAfter": {
+                                "ComposeMailMessage": [
+                                    "Succeeded"
+                                ]
+                            },
+                            "type": "ApiConnection",
+                            "inputs": {
+                                "body": {
+                                    "Attachments": [
+                                        {
+                                            "ContentBytes": "@{base64(variables('HTML-custom'))}",
+                                            "Name": "SqlResult@{formatDateTime(convertTimeZone(utcNow(),'UTC','Romance Standard Time'), 'yyyy-MM-ddTHH.mm')}.html"
+                                        }
+                                    ],
+                                    "Body": "<p>@{outputs('ComposeMailMessage')}</p>",
+                                    "Importance": "Normal",
+                                    "Subject": "Sql BPA Result - OpenAI comment",
+                                    "To": "replace with email to send to"
+                                },
+                                "host": {
+                                    "connection": {
+                                        "name": "@parameters('$connections')['office365']['connectionId']"
+                                    }
+                                },
+                                "method": "post",
+                                "path": "/v2/Mail"
+                            }
+                        }
+                    },
+                    "outputs": {}
+                },
+                "parameters": {
+                    "$connections": {
+                        "value": {
+                          }
+                    }
+                }
+            }
+        }
+    ]
+}

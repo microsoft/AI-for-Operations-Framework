@@ -1,0 +1,11 @@
+{
+  "IsEncrypted": false,
+  "Values": {
+    "AzureWebJobsStorage": "",
+    "FUNCTIONS_WORKER_RUNTIME": "python",
+    "QUESTION_ENDPOINT": "change-with-openai-endpoint",
+    "APPINSIGHTS_INSTRUMENTATIONKEY": "e4e0ad95-1088-4cdc-b5a2-0309d643c1a8",
+    "APPLICATIONINSIGHTS_CONNECTION_STRING": "InstrumentationKey=e4e0ad95-1088-4cdc-b5a2-0309d643c1a8;IngestionEndpoint=https://westeurope-5.in.applicationinsights.azure.com/;LiveEndpoint=https://westeurope.livediagnostics.monitor.azure.com/;ApplicationId=5376b542-d34a-4776-b408-f51da0db884f",
+    "FUNCTIONS_EXTENSION_VERSION": "~4"
+  }
+}
