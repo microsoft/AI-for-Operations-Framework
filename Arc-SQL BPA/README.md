@@ -7,7 +7,6 @@
 | replacewithRG | Connection setting during deployment | Replace with the selected RG Name for the deployment |
 | replace with tenant id | HTTP Module: Tenant ID | Replace with your Tenant ID |
 | OpenAI API Key | String Resource to connect to OpenAI | Replace with your Azure OpenAI Key |
-| BingSearc API Key | String Resource to connect to BingSearch | Replace with your Azure BingSearch |
 
 
 <h3> Important </h3>
@@ -111,21 +110,12 @@ SqlAssessment_CL
 
 Configure the Api Key with the value inside your OpenAI Service:
 
-![Sentinel Apy Key](./images/ApiKey.jpg)
+![Sentinel Api Key](./images/ApiKey.jpg)
 
 Configure __ForeachSQLResult__ section with value of query result and each parameter in Question variable as you like:
 
 ![SQL BPA question](./images/query-value.jpg)
 ![SQL BPA question](./images/value-question.jpg)
-
-Create and configure BingSearch resource (NOT BingSearch Custom):
-![SQL BPA Bing](./images/BingSearch_Creation.jpg)
-
-Get Bink API Key:
-![SQL BPA Bing](./images/BingKey.jpg)
-
-Set BingSearch API Key in the connector:
-![SQL BPA Bing](./images/BingSearch_Conf.jpg)
 
 Configure the severity level as a condition filter as you prefer:
 
