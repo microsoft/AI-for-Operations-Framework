@@ -25,7 +25,7 @@
             "type": "Microsoft.Logic/workflows",
             "apiVersion": "2017-07-01",
             "name": "[parameters('workflows_SQL_BPA_ReadLink_Generalized_name')]",
-            "location": "[parameters('location')]",
+            "location": "[resourceGroup().location]",
             "identity": {
                 "type": "SystemAssigned"
             },
@@ -35,7 +35,7 @@
                     "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
                     "contentVersion": "1.0.0.0",
                     "parameters": {
-                       "$connections": {
+                        "$connections": {
                             "defaultValue": {},
                             "type": "Object"
                         }
@@ -438,306 +438,6 @@
                                     "type": "Compose",
                                     "inputs": "@body('Read_Final_Link')?['htmlContent']"
                                 },
-                                "For_each_result_of_Bing": {
-                                    "foreach": "@body('Parse_WebSearch')?['webPages']?['value']",
-                                    "actions": {
-                                        "Set_variable_Redirection_Link": {
-                                            "type": "SetVariable",
-                                            "inputs": {
-                                                "name": "Redirection Link",
-                                                "value": "@{items('For_each_result_of_Bing')?['url']}"
-                                            }
-                                        }
-                                    },
-                                    "runAfter": {
-                                        "Parse_WebSearch": [
-                                            "Succeeded"
-                                        ]
-                                    },
-                                    "type": "Foreach",
-                                    "runtimeConfiguration": {
-                                        "concurrency": {
-                                            "repetitions": 1
-                                        }
-                                    }
-                                },
-                                "Parse_WebSearch": {
-                                    "runAfter": {
-                                        "Search_for_the_real_link_from_HelpLink": [
-                                            "Succeeded"
-                                        ]
-                                    },
-                                    "type": "ParseJson",
-                                    "inputs": {
-                                        "content": "@body('Search_for_the_real_link_from_HelpLink')",
-                                        "schema": {
-                                            "properties": {
-                                                "body": {
-                                                    "properties": {
-                                                        "_type": {
-                                                            "type": "string"
-                                                        },
-                                                        "queryContext": {
-                                                            "properties": {
-                                                                "originalQuery": {
-                                                                    "type": "string"
-                                                                }
-                                                            },
-                                                            "type": "object"
-                                                        },
-                                                        "rankingResponse": {
-                                                            "properties": {
-                                                                "mainline": {
-                                                                    "properties": {
-                                                                        "items": {
-                                                                            "items": {
-                                                                                "properties": {
-                                                                                    "answerType": {
-                                                                                        "type": "string"
-                                                                                    },
-                                                                                    "resultIndex": {
-                                                                                        "type": "integer"
-                                                                                    },
-                                                                                    "value": {
-                                                                                        "properties": {
-                                                                                            "id": {
-                                                                                                "type": "string"
-                                                                                            }
-                                                                                        },
-                                                                                        "type": "object"
-                                                                                    }
-                                                                                },
-                                                                                "required": [
-                                                                                    "answerType",
-                                                                                    "value"
-                                                                                ],
-                                                                                "type": "object"
-                                                                            },
-                                                                            "type": "array"
-                                                                        }
-                                                                    },
-                                                                    "type": "object"
-                                                                },
-                                                                "sidebar": {
-                                                                    "properties": {
-                                                                        "items": {
-                                                                            "items": {
-                                                                                "properties": {
-                                                                                    "answerType": {
-                                                                                        "type": "string"
-                                                                                    }
-                                                                                },
-                                                                                "required": [
-                                                                                    "answerType"
-                                                                                ],
-                                                                                "type": "object"
-                                                                            },
-                                                                            "type": "array"
-                                                                        }
-                                                                    },
-                                                                    "type": "object"
-                                                                }
-                                                            },
-                                                            "type": "object"
-                                                        },
-                                                        "relatedSearches": {
-                                                            "properties": {
-                                                                "id": {
-                                                                    "type": "string"
-                                                                },
-                                                                "value": {
-                                                                    "items": {
-                                                                        "properties": {
-                                                                            "displayText": {
-                                                                                "type": "string"
-                                                                            },
-                                                                            "text": {
-                                                                                "type": "string"
-                                                                            },
-                                                                            "webSearchUrl": {
-                                                                                "type": "string"
-                                                                            }
-                                                                        },
-                                                                        "required": [
-                                                                            "text",
-                                                                            "displayText",
-                                                                            "webSearchUrl"
-                                                                        ],
-                                                                        "type": "object"
-                                                                    },
-                                                                    "type": "array"
-                                                                }
-                                                            },
-                                                            "type": "object"
-                                                        },
-                                                        "webPages": {
-                                                            "properties": {
-                                                                "someResultsRemoved": {
-                                                                    "type": "boolean"
-                                                                },
-                                                                "totalEstimatedMatches": {
-                                                                    "type": "integer"
-                                                                },
-                                                                "value": {
-                                                                    "items": {
-                                                                        "properties": {
-                                                                            "cachedPageUrl": {
-                                                                                "type": "string"
-                                                                            },
-                                                                            "dateLastCrawled": {
-                                                                                "type": "string"
-                                                                            },
-                                                                            "datePublished": {
-                                                                                "type": "string"
-                                                                            },
-                                                                            "datePublishedDisplayText": {
-                                                                                "type": "string"
-                                                                            },
-                                                                            "displayUrl": {
-                                                                                "type": "string"
-                                                                            },
-                                                                            "id": {
-                                                                                "type": "string"
-                                                                            },
-                                                                            "isFamilyFriendly": {
-                                                                                "type": "boolean"
-                                                                            },
-                                                                            "isNavigational": {
-                                                                                "type": "boolean"
-                                                                            },
-                                                                            "language": {
-                                                                                "type": "string"
-                                                                            },
-                                                                            "name": {
-                                                                                "type": "string"
-                                                                            },
-                                                                            "noCache": {
-                                                                                "type": "boolean"
-                                                                            },
-                                                                            "siteName": {
-                                                                                "type": "string"
-                                                                            },
-                                                                            "snippet": {
-                                                                                "type": "string"
-                                                                            },
-                                                                            "url": {
-                                                                                "type": "string"
-                                                                            }
-                                                                        },
-                                                                        "required": [
-                                                                            "id",
-                                                                            "name",
-                                                                            "url",
-                                                                            "datePublished",
-                                                                            "datePublishedDisplayText",
-                                                                            "isFamilyFriendly",
-                                                                            "displayUrl",
-                                                                            "snippet",
-                                                                            "dateLastCrawled",
-                                                                            "cachedPageUrl",
-                                                                            "language",
-                                                                            "isNavigational",
-                                                                            "noCache",
-                                                                            "siteName"
-                                                                        ],
-                                                                        "type": "object"
-                                                                    },
-                                                                    "type": "array"
-                                                                },
-                                                                "webSearchUrl": {
-                                                                    "type": "string"
-                                                                }
-                                                            },
-                                                            "type": "object"
-                                                        }
-                                                    },
-                                                    "type": "object"
-                                                },
-                                                "headers": {
-                                                    "properties": {
-                                                        "Accept-CH": {
-                                                            "type": "string"
-                                                        },
-                                                        "BingAPIs-Market": {
-                                                            "type": "string"
-                                                        },
-                                                        "BingAPIs-RGUID": {
-                                                            "type": "string"
-                                                        },
-                                                        "BingAPIs-SessionId": {
-                                                            "type": "string"
-                                                        },
-                                                        "BingAPIs-TraceId": {
-                                                            "type": "string"
-                                                        },
-                                                        "CSP-Billing-Usage": {
-                                                            "type": "string"
-                                                        },
-                                                        "Cache-Control": {
-                                                            "type": "string"
-                                                        },
-                                                        "Content-Length": {
-                                                            "type": "string"
-                                                        },
-                                                        "Content-Type": {
-                                                            "type": "string"
-                                                        },
-                                                        "Date": {
-                                                            "type": "string"
-                                                        },
-                                                        "Expires": {
-                                                            "type": "string"
-                                                        },
-                                                        "P3P": {
-                                                            "type": "string"
-                                                        },
-                                                        "Strict-Transport-Security": {
-                                                            "type": "string"
-                                                        },
-                                                        "Transfer-Encoding": {
-                                                            "type": "string"
-                                                        },
-                                                        "UserAgentReductionOptOut": {
-                                                            "type": "string"
-                                                        },
-                                                        "Vary": {
-                                                            "type": "string"
-                                                        },
-                                                        "X-Cache": {
-                                                            "type": "string"
-                                                        },
-                                                        "X-Content-Type-Options": {
-                                                            "type": "string"
-                                                        },
-                                                        "X-EventID": {
-                                                            "type": "string"
-                                                        },
-                                                        "X-MSAPI-UserState": {
-                                                            "type": "string"
-                                                        },
-                                                        "X-MSEdge-ClientID": {
-                                                            "type": "string"
-                                                        },
-                                                        "X-MSEdge-Ref": {
-                                                            "type": "string"
-                                                        },
-                                                        "X-Search-ResponseInfo": {
-                                                            "type": "string"
-                                                        },
-                                                        "apim-request-id": {
-                                                            "type": "string"
-                                                        }
-                                                    },
-                                                    "type": "object"
-                                                },
-                                                "statusCode": {
-                                                    "type": "integer"
-                                                }
-                                            },
-                                            "type": "object"
-                                        }
-                                    }
-                                },
                                 "Read_Final_Link": {
                                     "runAfter": {
                                         "Compose": [
@@ -754,21 +454,6 @@
                                                 }
                                             },
                                             "type": "object"
-                                        }
-                                    }
-                                },
-                                "Search_for_the_real_link_from_HelpLink": {
-                                    "type": "Http",
-                                    "inputs": {
-                                        "uri": "https://api.bing.microsoft.com/v7.0/search?q=@{item()?['HelpLink']}&count=1",
-                                        "method": "GET",
-                                        "headers": {
-                                            "Ocp-Apim-Subscription-Key": "change with your BingSearch api Key"
-                                        }
-                                    },
-                                    "runtimeConfiguration": {
-                                        "contentTransfer": {
-                                            "transferMode": "Chunked"
                                         }
                                     }
                                 },
@@ -810,16 +495,13 @@
                                 },
                                 "Read_real_HelpLink": {
                                     "runAfter": {
-                                        "For_each_result_of_Bing": [
-                                            "Succeeded"
-                                        ],
-                                        "Search_for_the_real_link_from_HelpLink": [
+                                        "Until": [
                                             "Succeeded"
                                         ]
                                     },
                                     "type": "Http",
                                     "inputs": {
-                                        "uri": "@variables('Redirection Link')",
+                                        "uri": "@variables('RedirectUrl')",
                                         "method": "GET"
                                     }
                                 },
@@ -831,10 +513,127 @@
                                     },
                                     "type": "Compose",
                                     "inputs": "@skip(variables('Article'), 2)\r\n"
+                                },
+                                "Set_variable_RedirectUrl": {
+                                    "type": "SetVariable",
+                                    "inputs": {
+                                        "name": "RedirectUrl",
+                                        "value": "@items('For_eachSQLResult')?['HelpLink']"
+                                    }
+                                },
+                                "Until": {
+                                    "actions": {
+                                        "Search_for_the_real_link_from_HelpLink": {
+                                            "type": "Http",
+                                            "inputs": {
+                                                "uri": "@variables('RedirectUrl')",
+                                                "method": "GET"
+                                            },
+                                            "runtimeConfiguration": {
+                                                "contentTransfer": {
+                                                    "transferMode": "Chunked"
+                                                }
+                                            }
+                                        },
+                                        "Check_status_code": {
+                                            "actions": {
+                                                "check_valid_url": {
+                                                    "actions": {
+                                                        "Set_variable_RedirectUrl_Check_I": {
+                                                            "type": "SetVariable",
+                                                            "inputs": {
+                                                                "name": "RedirectUrl",
+                                                                "value": "http://learn.microsoft.com@{outputs('Search_for_the_real_link_from_HelpLink')?['headers']?['Location']}"
+                                                            }
+                                                        }
+                                                    },
+                                                    "else": {
+                                                        "actions": {
+                                                            "Set_variable_RedirectUrl_Check_II": {
+                                                                "type": "SetVariable",
+                                                                "inputs": {
+                                                                    "name": "RedirectUrl",
+                                                                    "value": "@outputs('Search_for_the_real_link_from_HelpLink')?['headers']?['Location']"
+                                                                }
+                                                            }
+                                                        }
+                                                    },
+                                                    "expression": {
+                                                        "and": [
+                                                            {
+                                                                "not": {
+                                                                    "contains": [
+                                                                        "@outputs('Search_for_the_real_link_from_HelpLink')?['headers']?['Location']",
+                                                                        "https"
+                                                                    ]
+                                                                }
+                                                            }
+                                                        ]
+                                                    },
+                                                    "type": "If"
+                                                }
+                                            },
+                                            "runAfter": {
+                                                "Search_for_the_real_link_from_HelpLink": [
+                                                    "Succeeded",
+                                                    "TimedOut",
+                                                    "Skipped",
+                                                    "Failed"
+                                                ]
+                                            },
+                                            "else": {
+                                                "actions": {
+                                                    "Set_Redirection_Link": {
+                                                        "type": "SetVariable",
+                                                        "inputs": {
+                                                            "name": "Redirection Link",
+                                                            "value": "@variables('RedirectUrl')"
+                                                        }
+                                                    },
+                                                    "Set_variable_RedirectUrl_Check_III": {
+                                                        "runAfter": {
+                                                            "Set_Redirection_Link": [
+                                                                "Succeeded"
+                                                            ]
+                                                        },
+                                                        "type": "SetVariable",
+                                                        "inputs": {
+                                                            "name": "RedirectUrl",
+                                                            "value": "@variables('Redirection Link')"
+                                                        }
+                                                    }
+                                                }
+                                            },
+                                            "expression": {
+                                                "and": [
+                                                    {
+                                                        "not": {
+                                                            "equals": [
+                                                                "@outputs('Search_for_the_real_link_from_HelpLink')?['statusCode']",
+                                                                200
+                                                            ]
+                                                        }
+                                                    }
+                                                ]
+                                            },
+                                            "type": "If"
+                                        }
+                                    },
+                                    "runAfter": {
+                                        "Set_variable_RedirectUrl": [
+                                            "Succeeded"
+                                        ]
+                                    },
+                                    "expression": "@equals(outputs('Search_for_the_real_link_from_HelpLink')?['statusCode'],200)",
+                                    "limit": {
+                                        "count": 60,
+                                        "timeout": "PT1H"
+                                    },
+                                    "type": "Until"
                                 }
                             },
                             "runAfter": {
-                                "HelpLinkContent": [
+                                "Initialize_variable_RedirectUrl": [
                                     "Succeeded"
                                 ]
                             },
@@ -1011,18 +810,32 @@
                                 "from": "@variables('CSV')",
                                 "format": "CSV"
                             }
+                        },
+                        "Initialize_variable_RedirectUrl": {
+                            "runAfter": {
+                                "HelpLinkContent": [
+                                    "Succeeded"
+                                ]
+                            },
+                            "type": "InitializeVariable",
+                            "inputs": {
+                                "variables": [
+                                    {
+                                        "name": "RedirectUrl",
+                                        "type": "string"
+                                    }
+                                ]
+                            }
                         }
                     },
                     "outputs": {}
                 },
                 "parameters": {
                     "$connections": {
-                        "value": {
-                            
+                        "value": {}
                     }
                 }
             }
         }
-    }
-  ]
-}
+    ]
+}   

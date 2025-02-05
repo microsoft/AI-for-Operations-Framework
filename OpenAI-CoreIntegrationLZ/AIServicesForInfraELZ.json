@@ -9,13 +9,6 @@
           "description": "Resource group for the OpenAI resource."
         }
       },
-      "bingResourceGroup": {
-        "type": "string",
-        "defaultValue": "BingAIRG",
-        "metadata": {
-          "description": "Resource group for the Bing resource."
-        }
-      },
       "LogicAppsRG": {
         "type": "string",
         "defaultValue": "LogicAppsforAI",
@@ -30,13 +23,6 @@
           "description": "Location for the OpenAI resource."
         }
       },
-      "bingRGLocation": {
-        "type": "string",
-        "defaultValue": "westeurope",
-        "metadata": {
-          "description": "Location for the Bing resource."
-        }
-      },
       "logicAppsLocation": {
         "type": "string",
         "defaultValue": "westeurope",
@@ -49,20 +35,6 @@
         "defaultValue": "AzureOpenAIResource2024",
         "metadata": {
           "description": "Name for the OpenAI resource. Must be globally unique."
-        }
-      },
-      "bingName": {
-        "type": "string",
-        "defaultValue": "bingsearch",
-        "metadata": {
-          "description": "Name for the Bing resource."
-        }
-      },
-      "skuBing": {
-        "type": "string",
-        "defaultValue": "F1",
-        "metadata": {
-          "description": "SKU for the Bing resource."
         }
       },
       "workflows_SQL_BPA_ReadLink_Generalized_name": {
@@ -186,43 +158,6 @@
         },
         "dependsOn": [
           "[resourceId('Microsoft.Resources/resourceGroups', parameters('openAIResourceGroup'))]"
-        ]
-      },
-      {
-        "type": "Microsoft.Resources/resourceGroups",
-        "apiVersion": "2022-09-01",
-        "name": "[parameters('bingResourceGroup')]",
-        "location": "[parameters('bingRGLocation')]",
-        "properties": {}
-      },
-      {
-        "type": "Microsoft.Resources/deployments",
-        "apiVersion": "2019-10-01",
-        "name": "DeployBing",
-        "resourceGroup": "[parameters('bingResourceGroup')]",
-        "properties": {
-          "mode": "Incremental",
-          "templateLink": {
-            "uri": "https://raw.githubusercontent.com/microsoft/AI-for-Operations-Framework/refs/heads/main/OpenAI-CoreIntegrationLZ/templateBingSearch.json",
-            "contentVersion": "1.0.0.0"
-          },
-          "parameters": {
-            "name": {
-              "value": "[parameters('bingName')]"
-            },
-            "location": {
-              "value": "global"
-            },
-            "sku": {
-              "value": "[parameters('skuBing')]"
-            },
-            "tagValues": {
-              "value": {}
-            }
-          }
-        },
-        "dependsOn": [
-          "[resourceId('Microsoft.Resources/resourceGroups', parameters('bingResourceGroup'))]"
         ]
       },
       {
@@ -417,10 +352,6 @@
       "openAILocation": {
         "type": "string",
         "value": "[parameters('openAILocation')]"
-      },
-      "bingResourceGroup": {
-        "type": "string",
-        "value": "[parameters('bingResourceGroup')]"
       },
       "sqlBPAResourceGroup": {
         "type": "string",
