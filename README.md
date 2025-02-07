@@ -25,7 +25,7 @@ Explore detailed resources and guides on key Azure technologies and OpenAI Landi
 <h2>Prerequisites</h2>
  
 
- Enable Azure OpenAI service and configure LLM model. Please be aware that some solutions may require some specific Azure OpenAI model.
+ Enable Azure OpenAI service and configure LLM model. Please be aware that some solutions may require some specific Azure OpenAI model. If you choose the Landing Zone Deployment that resource will be created automatically.
 
 ![OpenAI Prereq](./Prereq.png )
 
