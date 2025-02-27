@@ -118,7 +118,7 @@ Configure __ForeachSQLResult__ section with value of query result and each param
 
 And now configure the RedirectUrl variable following the example:
 
-![SQL BPA question](./images/query-value.jpg)
+![SQL BPA question](./images/set-variable-redirect-url.jpeg)
 
 Configure the Question Variable following the example below:
 
