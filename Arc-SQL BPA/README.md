@@ -169,4 +169,17 @@ Before <br>
 After <br>
 ![Sentinel Add Content](./images/send-email2.jpg)
 
+Here all the configuration related the 2 attachments:
+
+```json
+                            {
+                                "Name": "Sql-BPA-Result@{formatDateTime(convertTimeZone(utcNow(),'UTC','Romance Standard Time'), 'yyyy-MM-ddTHH.mm')}.html",
+                                "ContentBytes": "@{base64(variables('HTML-custom'))}"
+                            },
+                            {
+                                "Name": "Sql-BPA-Result@{formatDateTime(convertTimeZone(utcNow(),'UTC','Romance Standard Time'), 'yyyy-MM-ddTHH.mm')}.csv",
+                                "ContentBytes": "@{base64(body('Create_CSV_table'))}"
+                            }
+```
+
 Now save your LogicApp and __Enable__ it.
