@@ -115,7 +115,24 @@ Configure the Api Key with the value inside your OpenAI Service:
 Configure __ForeachSQLResult__ section with value of query result and each parameter in Question variable as you like:
 
 ![SQL BPA question](./images/query-value.jpg)
+
+And now configure the RedirectUrl variable following the example:
+
+![SQL BPA question](./images/set-variable-redirect-url.jpeg)
+
+Configure the Question Variable following the example below:
+
 ![SQL BPA question](./images/value-question.jpg)
+
+NB. you can use the following variable below to valorize the items i greyed out:
+
+```
+@{item()?['Message']}
+ 
+@{item()?['Description']}
+ 
+@{item()?['TargetType']}
+ ```
 
 Configure the severity level as a condition filter as you prefer:
 
@@ -129,6 +146,21 @@ At this point, be sure that the ComposeCSV block is correctly configured. When t
 
 ![ComposeCSV](./images/composeCSV.jpeg)
 
+NB. you can use the following variable below to valorize the items i greyed out:
+
+```
+@{items('For_eachSQLResult')?['TargetName']}
+ 
+@{items('For_eachSQLResult')?['Severity']}
+ 
+@{items('For_eachSQLResult')?['Message']}
+ 
+@{items('For_each_AI_Response')?['message']?['content']}
+
+@{items('For_eachSQLResult')?['HelpLink']}
+ 
+ ```
+
 The last configuration is change the broken module __Send an email (V2)__ with a new one, add the attachment and customize the file name :
 
 Before <br>
@@ -136,5 +168,18 @@ Before <br>
 
 After <br>
 ![Sentinel Add Content](./images/send-email2.jpg)
+
+Here all the configuration related the 2 attachments:
+
+```json
+                            {
+                                "Name": "Sql-BPA-Result@{formatDateTime(convertTimeZone(utcNow(),'UTC','Romance Standard Time'), 'yyyy-MM-ddTHH.mm')}.html",
+                                "ContentBytes": "@{base64(variables('HTML-custom'))}"
+                            },
+                            {
+                                "Name": "Sql-BPA-Result@{formatDateTime(convertTimeZone(utcNow(),'UTC','Romance Standard Time'), 'yyyy-MM-ddTHH.mm')}.csv",
+                                "ContentBytes": "@{base64(body('Create_CSV_table'))}"
+                            }
+```
 
 Now save your LogicApp and __Enable__ it.
