@@ -39,6 +39,20 @@ At this point we need to configure the Ask to OpenAI module replacing the requir
 
 ![OpenAI](./images/OpenAI.jpg)
 
+Now we have 2 posibilities:
+- Modify the body of the e-mail using a "Compose" module
+- Use the body inside the "Send Email V2" module. The choice is up to you.
+
+In case you choose the first option below an example:
+
+![OpenAI](./images/Compose.jpeg)
+
+Last Replace variable:
+
+ ```
+replace(variables('Remove square II'), '\n','')
+```json
+
 Last step is to add a notification section.
 In the example below we have a "Send Email V2" connector for send the final report to the required people or to a Teams channel . If you want to follow the same approach configure the module following the same example adding them at the end of the Logic App. Make sure to use the correct variable in the body of the email in order to have them correctly formatted:
 
