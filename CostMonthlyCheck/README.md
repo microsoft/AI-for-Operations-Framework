@@ -30,10 +30,13 @@ As first step please configure the required recurrence:
 
 ![recurrence](./images/Recurrence.jpg)
 
-
 Configure the Api Key with the value inside your OpenAI Service:
 
 ![Api Key](./images/ApiKey.jpg)
+
+Modify the required subscription id in each the HTTP connector in order to obtain the required information:
+
+![Api Key](./images/Sub-Id.jpeg)
 
 At this point we need to configure the Ask to OpenAI module replacing the required parameters:
 
