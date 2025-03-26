@@ -49,9 +49,9 @@ In case you choose the first option below an example:
 
 Last Replace variable:
 
- ```
+```Compose
 replace(variables('Remove square II'), '\n','')
-```json
+```
 
 Last step is to add a notification section.
 In the example below we have a "Send Email V2" connector for send the final report to the required people or to a Teams channel . If you want to follow the same approach configure the module following the same example adding them at the end of the Logic App. Make sure to use the correct variable in the body of the email in order to have them correctly formatted:
