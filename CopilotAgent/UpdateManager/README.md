@@ -9,7 +9,6 @@
 
 Click on the three dots and then Open code editor:
 
-![CodeEditorblank](../images/topic-code.jpg )
 <img src="../images/topic-code.jpg" alt="CodeEditorblank" width="800" >
 
 Copy and paste the code below and then click Save:<br>
@@ -182,27 +181,27 @@ outputType: {}
 
 When the topic is created, set the UMChoise Variable inside the question block:
 
-![UMChoise](./images/UMChoise-variable.jpg | width=70 )
+![UMChoise](./images/UMChoise-variable.jpg  )
 
-![UMChoiseProperties](./images/UMChoise-properties.png | width=70 )
+![UMChoiseProperties](./images/UMChoise-properties.png  )
 
 Check the UMChoise condition in the left branch of the parallelism:
 
-![UMChoiseCondition](./images/UMChoise-condition.jpg | width=70 )
+![UMChoiseCondition](./images/UMChoise-condition.jpg  )
 
 Now after UMChoise Condition, create new flow:
 
-![NewFlow Get Update Manager Overview](./images/new-flow.jpg | width=70 )
+![NewFlow Get Update Manager Overview](./images/new-flow.jpg  )
 
-![NewFlowBlank](./images/flow-bank.jpg | width=70 )
+![NewFlowBlank](./images/flow-bank.jpg  )
 
 Click on "+" and create "Initialize Variable":
 
-![querygraphvariable](./images/getUpdateManagerOverviewFlow/Initializevariable-querygraph.jpg | width=70 )
+![querygraphvariable](./images/getUpdateManagerOverviewFlow/Initializevariable-querygraph.jpg  )
 
 Set properties end past the following query:
 
-![querygraphvariable](./images/getUpdateManagerOverviewFlow/querygraph.jpg | width=70 )
+![querygraphvariable](./images/getUpdateManagerOverviewFlow/querygraph.jpg  )
 
 ```querygraph
 ((resources
@@ -260,15 +259,15 @@ unsupported = countif(isUnsupported and not(isnotnull(assessProperties) and asse
 
 Click again on "+" and select again "Initialize Variable":
 
-![AUMOverview](./images/getUpdateManagerOverviewFlow/Initializevariable-AUMOverview.jpg | width=70 )
+![AUMOverview](./images/getUpdateManagerOverviewFlow/Initializevariable-AUMOverview.jpg  )
 
 After the variables creation place an "HTTP request" block and fill all the required information:
 
-![HTTPRequest](./images/getUpdateManagerOverviewFlow/http-request.jpg | width=70 )
+![HTTPRequest](./images/getUpdateManagerOverviewFlow/http-request.jpg  )
 
 After HTTP request creation place and Parse JSON block and use the "body" output as a content.
 
-![parseJSON](./images/getUpdateManagerOverviewFlow/parsejson.jpg | width=70 )
+![parseJSON](./images/getUpdateManagerOverviewFlow/parsejson.jpg  )
 
 Copy and past the schema:
 
@@ -406,15 +405,15 @@ Copy and past the schema:
 
 Now we need to set AUMOverview variable, create a "Set Variable" block :
 
-![setvariable](./images/getUpdateManagerOverviewFlow/set-variable.jpg | width=70 )
+![setvariable](./images/getUpdateManagerOverviewFlow/set-variable.jpg  )
 
 Create another "HTTP Request" for OpenAI service:
 
-![HTTPrequestOpenAIe](./images/getUpdateManagerOverviewFlow/http_openAIrequest.jpg | width=70 )
+![HTTPrequestOpenAIe](./images/getUpdateManagerOverviewFlow/http_openAIrequest.jpg  )
 
 After HTTP request for OpenAI creation, place an "Parse JSON" block and use the "body" output of HTTP request OpenAI as a content.
 
-![parseJSON](./images/getUpdateManagerOverviewFlow/parseJsonOpneAI.jpg | width=70 )
+![parseJSON](./images/getUpdateManagerOverviewFlow/parseJsonOpneAI.jpg  )
 
 Copy and past the schema (Schema for OpenAI O3-mini model.If you use other model schema may change):
 
@@ -707,21 +706,21 @@ Copy and past the schema (Schema for OpenAI O3-mini model.If you use other model
 ```
 Click again on "+" and select "Initialize Variable":
 
-![AUMOverview](./images/getUpdateManagerOverviewFlow/initialize-respond.jpg | width=70 )
+![AUMOverview](./images/getUpdateManagerOverviewFlow/initialize-respond.jpg  )
 
 Now create an "Apply To Each" block, and ensure that the variable follow the images below:
 
-![Applytoeach](./images/getUpdateManagerOverviewFlow/applytoEach.jpg | width=70 )
+![Applytoeach](./images/getUpdateManagerOverviewFlow/applytoEach.jpg  )
 
-![Applytoeachvariable](./images/getUpdateManagerOverviewFlow/applytoEachvariable.jpg | width=70 )
+![Applytoeachvariable](./images/getUpdateManagerOverviewFlow/applytoEachvariable.jpg  )
 
 Finally we can parse the output to Copilot Agent:
 
-![respond](./images/getUpdateManagerOverviewFlow/respondtoagent.jpg | width=70 )
+![respond](./images/getUpdateManagerOverviewFlow/respondtoagent.jpg  )
 
 As a final step, save and publish the flow. The entire logic flow must appear like that:
 
-![flow](./images/getUpdateManagerOverviewFlow/Flow.jpg | width=70 )
+![flow](./images/getUpdateManagerOverviewFlow/Flow.jpg  )
 
 
 
