@@ -260,6 +260,466 @@ noPendingUpdatesLinux = countif(isnotnull(assessProperties) and assessProperties
 unsupported = countif(isUnsupported and not(isnotnull(assessProperties) and assessProperties.status =~ "inprogress"))
 ```
 
+Click again on "+" and select again "Initialize Variable":
+
+![AUMOverview](./images/getUpdateManagerOverviewFlow/Initializevariable-AUMOverview.jpg )
+
+After the variables creation place an "HTTP request" block and fill all the required information:
+
+![HTTPRequest](./images/getUpdateManagerOverviewFlow/http-request.jpg )
+
+After HTTP request creation place and Parse JSON block and use the "body" output as a content.
+
+![parseJSON](./images/getUpdateManagerOverviewFlow/parsejson.jpg )
+
+Copy and past the schema:
+
+```schema
+{
+    "type": "object",
+    "properties": {
+        "statusCode": {
+            "type": "integer"
+        },
+        "headers": {
+            "type": "object",
+            "properties": {
+                "Cache-Control": {
+                    "type": "string"
+                },
+                "Pragma": {
+                    "type": "string"
+                },
+                "Strict-Transport-Security": {
+                    "type": "string"
+                },
+                "x-ms-correlation-request-id": {
+                    "type": "string"
+                },
+                "x-ms-ratelimit-remaining-tenant-resource-requests": {
+                    "type": "string"
+                },
+                "x-ms-user-quota-remaining": {
+                    "type": "string"
+                },
+                "x-ms-user-quota-resets-after": {
+                    "type": "string"
+                },
+                "x-ms-resource-graph-request-duration": {
+                    "type": "string"
+                },
+                "x-ms-operation-identifier": {
+                    "type": "string"
+                },
+                "x-ms-ratelimit-remaining-tenant-reads": {
+                    "type": "string"
+                },
+                "x-ms-request-id": {
+                    "type": "string"
+                },
+                "x-ms-routing-request-id": {
+                    "type": "string"
+                },
+                "X-Content-Type-Options": {
+                    "type": "string"
+                },
+                "X-Cache": {
+                    "type": "string"
+                },
+                "X-MSEdge-Ref": {
+                    "type": "string"
+                },
+                "Date": {
+                    "type": "string"
+                },
+                "Content-Length": {
+                    "type": "string"
+                },
+                "Content-Type": {
+                    "type": "string"
+                },
+                "Expires": {
+                    "type": "string"
+                }
+            }
+        },
+        "body": {
+            "type": "object",
+            "properties": {
+                "totalRecords": {
+                    "type": "integer"
+                },
+                "count": {
+                    "type": "integer"
+                },
+                "data": {
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "total": {
+                                "type": "integer"
+                            },
+                            "nodata": {
+                                "type": "integer"
+                            },
+                            "pendingReboot": {
+                                "type": "integer"
+                            },
+                            "pendingUpdatesWindows": {
+                                "type": "integer"
+                            },
+                            "pendingUpdatesLinux": {
+                                "type": "integer"
+                            },
+                            "noPendingUpdatesWindows": {
+                                "type": "integer"
+                            },
+                            "noPendingUpdatesLinux": {
+                                "type": "integer"
+                            },
+                            "unsupported": {
+                                "type": "integer"
+                            }
+                        },
+                        "required": [
+                            "total",
+                            "nodata",
+                            "pendingReboot",
+                            "pendingUpdatesWindows",
+                            "pendingUpdatesLinux",
+                            "noPendingUpdatesWindows",
+                            "noPendingUpdatesLinux",
+                            "unsupported"
+                        ]
+                    }
+                },
+                "facets": {
+                    "type": "array"
+                },
+                "resultTruncated": {
+                    "type": "string"
+                }
+            }
+        }
+    }
+}
+```
+
+Now we need to set AUMOverview variable, create a "Set Variable" block :
+
+![setvariable](./images/getUpdateManagerOverviewFlow/set-variable.jpg )
+
+Create another "HTTP Request" for OpenAI service:
+
+![HTTPrequestOpenAIe](./images/getUpdateManagerOverviewFlow/http_openAIrequest.jpg )
+
+After HTTP request for OpenAI creation, place an "Parse JSON" block and use the "body" output of HTTP request OpenAI as a content.
+
+![parseJSON](./images/getUpdateManagerOverviewFlow/parseJsonOpneAI.jpg )
+
+Copy and past the schema (Schema for OpenAI O3-mini model.If you use other model schema may change):
+
+```schema
+{
+    "type": "object",
+    "properties": {
+        "statusCode": {
+            "type": "integer"
+        },
+        "headers": {
+            "type": "object",
+            "properties": {
+                "apim-request-id": {
+                    "type": "string"
+                },
+                "Strict-Transport-Security": {
+                    "type": "string"
+                },
+                "X-Content-Type-Options": {
+                    "type": "string"
+                },
+                "x-ms-region": {
+                    "type": "string"
+                },
+                "x-ratelimit-remaining-requests": {
+                    "type": "string"
+                },
+                "x-ratelimit-limit-requests": {
+                    "type": "string"
+                },
+                "x-ratelimit-remaining-tokens": {
+                    "type": "string"
+                },
+                "x-ratelimit-limit-tokens": {
+                    "type": "string"
+                },
+                "cmp-upstream-response-duration": {
+                    "type": "string"
+                },
+                "x-accel-buffering": {
+                    "type": "string"
+                },
+                "x-aml-cluster": {
+                    "type": "string"
+                },
+                "x-envoy-upstream-service-time": {
+                    "type": "string"
+                },
+                "x-ms-rai-invoked": {
+                    "type": "string"
+                },
+                "X-Request-ID": {
+                    "type": "string"
+                },
+                "ms-azureml-model-time": {
+                    "type": "string"
+                },
+                "x-ms-client-request-id": {
+                    "type": "string"
+                },
+                "azureml-model-session": {
+                    "type": "string"
+                },
+                "x-ms-deployment-name": {
+                    "type": "string"
+                },
+                "Date": {
+                    "type": "string"
+                },
+                "Content-Length": {
+                    "type": "string"
+                },
+                "Content-Type": {
+                    "type": "string"
+                }
+            }
+        },
+        "body": {
+            "type": "object",
+            "properties": {
+                "choices": {
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "content_filter_results": {
+                                "type": "object",
+                                "properties": {
+                                    "hate": {
+                                        "type": "object",
+                                        "properties": {
+                                            "filtered": {
+                                                "type": "boolean"
+                                            },
+                                            "severity": {
+                                                "type": "string"
+                                            }
+                                        }
+                                    },
+                                    "self_harm": {
+                                        "type": "object",
+                                        "properties": {
+                                            "filtered": {
+                                                "type": "boolean"
+                                            },
+                                            "severity": {
+                                                "type": "string"
+                                            }
+                                        }
+                                    },
+                                    "sexual": {
+                                        "type": "object",
+                                        "properties": {
+                                            "filtered": {
+                                                "type": "boolean"
+                                            },
+                                            "severity": {
+                                                "type": "string"
+                                            }
+                                        }
+                                    },
+                                    "violence": {
+                                        "type": "object",
+                                        "properties": {
+                                            "filtered": {
+                                                "type": "boolean"
+                                            },
+                                            "severity": {
+                                                "type": "string"
+                                            }
+                                        }
+                                    }
+                                }
+                            },
+                            "finish_reason": {
+                                "type": "string"
+                            },
+                            "index": {
+                                "type": "integer"
+                            },
+                            "logprobs": {},
+                            "message": {
+                                "type": "object",
+                                "properties": {
+                                    "content": {
+                                        "type": "string"
+                                    },
+                                    "refusal": {},
+                                    "role": {
+                                        "type": "string"
+                                    }
+                                }
+                            }
+                        },
+                        "required": [
+                            "content_filter_results",
+                            "finish_reason",
+                            "index",
+                            "logprobs",
+                            "message"
+                        ]
+                    }
+                },
+                "created": {
+                    "type": "integer"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "model": {
+                    "type": "string"
+                },
+                "object": {
+                    "type": "string"
+                },
+                "prompt_filter_results": {
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "prompt_index": {
+                                "type": "integer"
+                            },
+                            "content_filter_results": {
+                                "type": "object",
+                                "properties": {
+                                    "hate": {
+                                        "type": "object",
+                                        "properties": {
+                                            "filtered": {
+                                                "type": "boolean"
+                                            },
+                                            "severity": {
+                                                "type": "string"
+                                            }
+                                        }
+                                    },
+                                    "self_harm": {
+                                        "type": "object",
+                                        "properties": {
+                                            "filtered": {
+                                                "type": "boolean"
+                                            },
+                                            "severity": {
+                                                "type": "string"
+                                            }
+                                        }
+                                    },
+                                    "sexual": {
+                                        "type": "object",
+                                        "properties": {
+                                            "filtered": {
+                                                "type": "boolean"
+                                            },
+                                            "severity": {
+                                                "type": "string"
+                                            }
+                                        }
+                                    },
+                                    "violence": {
+                                        "type": "object",
+                                        "properties": {
+                                            "filtered": {
+                                                "type": "boolean"
+                                            },
+                                            "severity": {
+                                                "type": "string"
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        },
+                        "required": [
+                            "prompt_index",
+                            "content_filter_results"
+                        ]
+                    }
+                },
+                "system_fingerprint": {
+                    "type": "string"
+                },
+                "usage": {
+                    "type": "object",
+                    "properties": {
+                        "completion_tokens": {
+                            "type": "integer"
+                        },
+                        "completion_tokens_details": {
+                            "type": "object",
+                            "properties": {
+                                "accepted_prediction_tokens": {
+                                    "type": "integer"
+                                },
+                                "audio_tokens": {
+                                    "type": "integer"
+                                },
+                                "reasoning_tokens": {
+                                    "type": "integer"
+                                },
+                                "rejected_prediction_tokens": {
+                                    "type": "integer"
+                                }
+                            }
+                        },
+                        "prompt_tokens": {
+                            "type": "integer"
+                        },
+                        "prompt_tokens_details": {
+                            "type": "object",
+                            "properties": {
+                                "audio_tokens": {
+                                    "type": "integer"
+                                },
+                                "cached_tokens": {
+                                    "type": "integer"
+                                }
+                            }
+                        },
+                        "total_tokens": {
+                            "type": "integer"
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+```
+Click again on "+" and select "Initialize Variable":
+
+![AUMOverview](./images/getUpdateManagerOverviewFlow/initialize-respond.jpg )
+
+Now create an "Apply To Each" block, and ensure that the variable follow the images below:
+
+![Applytoeach](./images/getUpdateManagerOverviewFlow/applytoEach.jpg )
+
+![Applytoeachvariable](./images/getUpdateManagerOverviewFlow/applytoEachvariable.jpg )
+
+Finally we can parse the output to Copilot Agent:
+
+![respond](./images/getUpdateManagerOverviewFlow/respondtoagent.jpg )
 
 
 
