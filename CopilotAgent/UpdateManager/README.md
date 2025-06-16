@@ -181,7 +181,7 @@ outputType: {}
 
 When the topic is created, set the UMChoise Variable inside the question block:
 
-![UMChoise](./images/UMChoise-variable.jpg  )
+<img src="./images/UMChoise-variable.jpg" alt="CUMChoise" width="800" >
 
 ![UMChoiseProperties](./images/UMChoise-properties.png  )
 
