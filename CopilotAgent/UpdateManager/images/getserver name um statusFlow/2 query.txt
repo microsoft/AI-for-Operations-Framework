@@ -1,0 +1,4 @@
+﻿patchassessmentresources
+| extend ServerName= extract(@'/machines/([^/]+)/', 1, id)
+| extend ServerNameAZ = extract(@'/virtualMachines/([^/]+)/', 1, id)
+| where  ServerName =~ "@{triggerBody()?['text']}" or ServerNameAZ =~"@{triggerBody()?['text']}"
