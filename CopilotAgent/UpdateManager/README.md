@@ -721,6 +721,12 @@ Finally we can parse the output to Copilot Agent:
 
 ![respond](./images/getUpdateManagerOverviewFlow/respondtoagent.jpg )
 
+As a final step, save and publish the flow. The entire logic flow must appear like that:
+
+![flow](./images/getUpdateManagerOverviewFlow/Flow.jpg )
+
+
+
 
 
 
