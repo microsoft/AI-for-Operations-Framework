@@ -10,7 +10,7 @@
 Click on the three dots and then Open code editor:
 
 ![CodeEditorblank](../images/topic-code.jpg )
-<img src="../images/topic-code.jpg" alt="CodeEditorblank" width="70" >
+<img src="../images/topic-code.jpg" alt="CodeEditorblank" width="400" >
 
 Copy and paste the code below and then click Save:<br>
 ```code
