@@ -1,4 +1,4 @@
-<h3>Microsoft Azure AI for Operation Framework Cipolot Agent</h3>
+<h3>Microsoft Azure AI for Operation Framework Copilot Agent</h3>
 
 
  <h2>Prerequisites</h2>
@@ -48,9 +48,9 @@ Follow the istructions below:
 
 **Solution Name** | **Information** | **Configuration** |
 | ------------- | ------------- | ------------- |
-| Copilot topic Update Manager | Topic used to integrate Update Manager with Copilot Studio | [Configuration Link](./Arc-SQL%20BPA/README.md) |
-| Copilot topic FinOps | Topic used to integrate FinOps to Copilot Studio | [Configuration Link](./UpdateManagement/README.md) |
-| Copilot topic SQL BPA | Topic used to integrate SQL BPA to Copilot Studio | [Configuration Link](./CostMonthlyCheck/README.md) |
+| Copilot topic Update Manager | Topic used to integrate Update Manager with Copilot Studio | [Configuration Link](./UpdateManager/README.md) |
+| Copilot topic FinOps | Topic used to integrate FinOps to Copilot Studio | [Configuration Link](./) |
+| Copilot topic SQL BPA | Topic used to integrate SQL BPA to Copilot Studio | [Configuration Link](./) |
 
 
  
