@@ -3,15 +3,13 @@
 | **Parameters** | **Information** | **Note** |
 | ------------- | ------------- | ------------- |
 | Call OpenAI Endpoint| The URL of your openAI endpoint | You can found the value inside the OpenAI resource inside Azure Cognitive Service |
-| repreplacewithRG | Connection setting during deployment | Replace with the selected RG Name for the deployment |
 | api-key | The API code for manage your OpenAI service | The parameter is inside the second "Initialize Variable". Put your question in the "value" attribute  |
-| changemodelname | Insert the model name | You can found the value inside the OpenAI resource inside Azure Cognitive Service |
 
 <h3> Deployment and Result </h3>
 
 Click on the three dots and then Open code editor:
 
-![CodeEditorank](../images/topic-code.jpg )
+![CodeEditorank](../images/topic-code.jpg | width=70 )
 
 
 Copy and paste the code below and then click Save:<br>
@@ -184,27 +182,27 @@ outputType: {}
 
 When the topic is created, set the UMChoise Variable inside the question block:
 
-![UMChoise](./images/UMChoise-variable.jpg )
+![UMChoise](./images/UMChoise-variable.jpg | width=70 )
 
-![UMChoiseProperties](./images/UMChoise-properties.png )
+![UMChoiseProperties](./images/UMChoise-properties.png | width=70 )
 
 Check the UMChoise condition in the left branch of the parallelism:
 
-![UMChoiseCondition](./images/UMChoise-condition.jpg )
+![UMChoiseCondition](./images/UMChoise-condition.jpg | width=70 )
 
 Now after UMChoise Condition, create new flow:
 
-![NewFlow Get Update Manager Overview](./images/new-flow.jpg )
+![NewFlow Get Update Manager Overview](./images/new-flow.jpg | width=70 )
 
-![NewFlowBlank](./images/flow-bank.jpg )
+![NewFlowBlank](./images/flow-bank.jpg | width=70 )
 
 Click on "+" and create "Initialize Variable":
 
-![querygraphvariable](./images/getUpdateManagerOverviewFlow/Initializevariable-querygraph.jpg )
+![querygraphvariable](./images/getUpdateManagerOverviewFlow/Initializevariable-querygraph.jpg | width=70 )
 
 Set properties end past the following query:
 
-![querygraphvariable](./images/getUpdateManagerOverviewFlow/querygraph.jpg )
+![querygraphvariable](./images/getUpdateManagerOverviewFlow/querygraph.jpg | width=70 )
 
 ```querygraph
 ((resources
@@ -262,15 +260,15 @@ unsupported = countif(isUnsupported and not(isnotnull(assessProperties) and asse
 
 Click again on "+" and select again "Initialize Variable":
 
-![AUMOverview](./images/getUpdateManagerOverviewFlow/Initializevariable-AUMOverview.jpg )
+![AUMOverview](./images/getUpdateManagerOverviewFlow/Initializevariable-AUMOverview.jpg | width=70 )
 
 After the variables creation place an "HTTP request" block and fill all the required information:
 
-![HTTPRequest](./images/getUpdateManagerOverviewFlow/http-request.jpg )
+![HTTPRequest](./images/getUpdateManagerOverviewFlow/http-request.jpg | width=70 )
 
 After HTTP request creation place and Parse JSON block and use the "body" output as a content.
 
-![parseJSON](./images/getUpdateManagerOverviewFlow/parsejson.jpg )
+![parseJSON](./images/getUpdateManagerOverviewFlow/parsejson.jpg | width=70 )
 
 Copy and past the schema:
 
@@ -408,15 +406,15 @@ Copy and past the schema:
 
 Now we need to set AUMOverview variable, create a "Set Variable" block :
 
-![setvariable](./images/getUpdateManagerOverviewFlow/set-variable.jpg )
+![setvariable](./images/getUpdateManagerOverviewFlow/set-variable.jpg | width=70 )
 
 Create another "HTTP Request" for OpenAI service:
 
-![HTTPrequestOpenAIe](./images/getUpdateManagerOverviewFlow/http_openAIrequest.jpg )
+![HTTPrequestOpenAIe](./images/getUpdateManagerOverviewFlow/http_openAIrequest.jpg | width=70 )
 
 After HTTP request for OpenAI creation, place an "Parse JSON" block and use the "body" output of HTTP request OpenAI as a content.
 
-![parseJSON](./images/getUpdateManagerOverviewFlow/parseJsonOpneAI.jpg )
+![parseJSON](./images/getUpdateManagerOverviewFlow/parseJsonOpneAI.jpg | width=70 )
 
 Copy and past the schema (Schema for OpenAI O3-mini model.If you use other model schema may change):
 
@@ -709,21 +707,21 @@ Copy and past the schema (Schema for OpenAI O3-mini model.If you use other model
 ```
 Click again on "+" and select "Initialize Variable":
 
-![AUMOverview](./images/getUpdateManagerOverviewFlow/initialize-respond.jpg )
+![AUMOverview](./images/getUpdateManagerOverviewFlow/initialize-respond.jpg | width=70 )
 
 Now create an "Apply To Each" block, and ensure that the variable follow the images below:
 
-![Applytoeach](./images/getUpdateManagerOverviewFlow/applytoEach.jpg )
+![Applytoeach](./images/getUpdateManagerOverviewFlow/applytoEach.jpg | width=70 )
 
-![Applytoeachvariable](./images/getUpdateManagerOverviewFlow/applytoEachvariable.jpg )
+![Applytoeachvariable](./images/getUpdateManagerOverviewFlow/applytoEachvariable.jpg | width=70 )
 
 Finally we can parse the output to Copilot Agent:
 
-![respond](./images/getUpdateManagerOverviewFlow/respondtoagent.jpg )
+![respond](./images/getUpdateManagerOverviewFlow/respondtoagent.jpg | width=70 )
 
 As a final step, save and publish the flow. The entire logic flow must appear like that:
 
-![flow](./images/getUpdateManagerOverviewFlow/Flow.jpg )
+![flow](./images/getUpdateManagerOverviewFlow/Flow.jpg | width=70 )
 
 
 
