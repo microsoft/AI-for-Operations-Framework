@@ -183,25 +183,25 @@ When the topic is created, set the UMChoise Variable inside the question block:
 
 <img src="./images/UMChoise-variable.jpg" alt="CUMChoise" width="800" >
 
-![UMChoiseProperties](./images/UMChoise-properties.png  )
+<img src="./images/UMChoise-properties.png" alt="UMChoiseProperties" width="800" >
 
 Check the UMChoise condition in the left branch of the parallelism:
 
-![UMChoiseCondition](./images/UMChoise-condition.jpg  )
+<img src="./images/UMChoise-condition.jpg" alt="UMChoiseCondition" width="800" >
 
 Now after UMChoise Condition, create new flow:
 
-![NewFlow Get Update Manager Overview](./images/new-flow.jpg  )
+<img src="./images/new-flow.jpg" alt="NewFlow Get Update Manager Overview" width="800" >
 
-![NewFlowBlank](./images/flow-bank.jpg  )
+<img src="./images/flow-bank.jpg" alt="NewFlowBlank" width="800" >
 
 Click on "+" and create "Initialize Variable":
 
-![querygraphvariable](./images/getUpdateManagerOverviewFlow/Initializevariable-querygraph.jpg  )
+<img src="./images/getUpdateManagerOverviewFlow/Initializevariable-querygraph.jpg" alt="querygraphvariable" width="800" >
 
 Set properties end past the following query:
 
-![querygraphvariable](./images/getUpdateManagerOverviewFlow/querygraph.jpg  )
+<img src="./images/getUpdateManagerOverviewFlow/querygraph.jpg" alt="querygraphvariable" width="800" >
 
 ```querygraph
 ((resources
@@ -259,7 +259,7 @@ unsupported = countif(isUnsupported and not(isnotnull(assessProperties) and asse
 
 Click again on "+" and select again "Initialize Variable":
 
-![AUMOverview](./images/getUpdateManagerOverviewFlow/Initializevariable-AUMOverview.jpg  )
+<img src="./images/getUpdateManagerOverviewFlow/Initializevariable-AUMOverview.jpg" alt="AUMOverview" width="800" >
 
 After the variables creation place an "HTTP request" block and fill all the required information:
 
