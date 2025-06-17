@@ -50,7 +50,7 @@ Follow the istructions below:
 | ------------- | ------------- | ------------- |
 | Copilot topic Update Manager | Topic used to integrate Update Manager with Copilot Studio | [Configuration Link](./UpdateManager/README.md) |
 | Copilot topic FinOps | Topic used to integrate FinOps to Copilot Studio | [Configuration Link](./) |
-| Copilot topic SQL BPA | Topic used to integrate SQL BPA to Copilot Studio | [Configuration Link](./) |
+
 
 
  
