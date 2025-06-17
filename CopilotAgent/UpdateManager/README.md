@@ -720,11 +720,5 @@ Finally we can parse the output to Copilot Agent:
 
 As a final step, save and publish the flow. The entire logic flow must appear like that:
 
-<img src="./images/getUpdateManagerOverviewFlow/Flow.jpg" alt="flow" width="800" >
-
-
-
-
-
-
+<img src="./images/getUpdateManagerOverviewFlow/Flow.jpg" alt="flow" width="600" >
 
