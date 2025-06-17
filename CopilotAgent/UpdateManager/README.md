@@ -263,11 +263,11 @@ Click again on "+" and select again "Initialize Variable":
 
 After the variables creation place an "HTTP request" block and fill all the required information:
 
-![HTTPRequest](./images/getUpdateManagerOverviewFlow/http-request.jpg  )
+<img src="./images/getUpdateManagerOverviewFlow/http-request.jpg" alt="HTTPRequest" width="800" >
 
 After HTTP request creation place and Parse JSON block and use the "body" output as a content.
 
-![parseJSON](./images/getUpdateManagerOverviewFlow/parsejson.jpg  )
+<img src="./images/getUpdateManagerOverviewFlow/parsejson.jpg" alt="parseJSON" width="800" >
 
 Copy and past the schema:
 
@@ -405,15 +405,15 @@ Copy and past the schema:
 
 Now we need to set AUMOverview variable, create a "Set Variable" block :
 
-![setvariable](./images/getUpdateManagerOverviewFlow/set-variable.jpg  )
+<img src="./images/getUpdateManagerOverviewFlow/set-variable.jpg" alt="setvariable" width="800" >
 
 Create another "HTTP Request" for OpenAI service:
 
-![HTTPrequestOpenAIe](./images/getUpdateManagerOverviewFlow/http_openAIrequest.jpg  )
+<img src="./images/getUpdateManagerOverviewFlow/http_openAIrequest.jpg" alt="HTTPrequestOpenAIe" width="800" >
 
 After HTTP request for OpenAI creation, place an "Parse JSON" block and use the "body" output of HTTP request OpenAI as a content.
 
-![parseJSON](./images/getUpdateManagerOverviewFlow/parseJsonOpneAI.jpg  )
+<img src="./images/getUpdateManagerOverviewFlow/parseJsonOpneAI.jpg" alt="parseJSON" width="800" >
 
 Copy and past the schema (Schema for OpenAI O3-mini model.If you use other model schema may change):
 
@@ -706,21 +706,22 @@ Copy and past the schema (Schema for OpenAI O3-mini model.If you use other model
 ```
 Click again on "+" and select "Initialize Variable":
 
-![AUMOverview](./images/getUpdateManagerOverviewFlow/initialize-respond.jpg  )
+<img src="./images/getUpdateManagerOverviewFlow/initialize-respond.jpg" alt="AUMOverview" width="800" >
 
 Now create an "Apply To Each" block, and ensure that the variable follow the images below:
 
-![Applytoeach](./images/getUpdateManagerOverviewFlow/applytoEach.jpg  )
+<img src="./images/getUpdateManagerOverviewFlow/applytoEach.jpg" alt="Applytoeach" width="800" >
 
-![Applytoeachvariable](./images/getUpdateManagerOverviewFlow/applytoEachvariable.jpg  )
+<img src="./images/getUpdateManagerOverviewFlow/applytoEachvariable.jpg" alt="Applytoeachvariable" width="800" >
 
 Finally we can parse the output to Copilot Agent:
 
-![respond](./images/getUpdateManagerOverviewFlow/respondtoagent.jpg  )
+<img src="./images/getUpdateManagerOverviewFlow/respondtoagent.jpg" alt="respond" width="800" >
 
 As a final step, save and publish the flow. The entire logic flow must appear like that:
 
 ![flow](./images/getUpdateManagerOverviewFlow/Flow.jpg  )
+<img src="./images/getUpdateManagerOverviewFlow/Flow.jpg" alt="flow" width="800" >
 
 
 
