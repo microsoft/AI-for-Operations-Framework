@@ -432,5 +432,5 @@ As a final step, save and publish the flow. The entire logic flow must appear li
 
 <img src="./images/12 flow.png" alt="flow" width="600" >
 
-Go back to continue [Configuration Link](../../README.md#GetServerNameUMStatus)
+Go back to continue [Configuration Link](../../README.md#flow2)
 
