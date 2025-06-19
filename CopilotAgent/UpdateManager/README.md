@@ -232,6 +232,10 @@ After that create a new flow
 > [!IMPORTANT]
 > At this point follow this configuration link to create OneTimeUpdateFlow: [Configuration Link](./Flow/OneTimeUpdateFlow/README.md )
 
+Set as input for the "Create Generative Answer" block the flow output, so "UpdateStatus":
+
+<img src="./images/GenerativeAnswerOneTimeUpdate.jpg" alt="UpdateStatus" width="800" >
+
 
 
 
