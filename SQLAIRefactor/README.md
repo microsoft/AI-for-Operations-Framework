@@ -2,6 +2,8 @@ This repository is the accompanying code for the "AI-based T-SQL Refactoring: an
 
 # SQLAIRefactor
 
+## OVERVIEW
+
 **SQLAIRefactor** is a Windows Forms application that leverages Azure OpenAI to analyze and optimize T-SQL queries. It connects to your SQL Server database, extracts schema metadata in JSON format, and uses prompt engineering and large language models to refactor queries and apply SQL Server best practices automatically.
 
 <img src="./images/OpenAIService.png" alt="openai" width="800" >
@@ -34,6 +36,10 @@ This technique can represent an advancement in SQL Server application developmen
 - [.NET Framework 4.8+](https://dotnet.microsoft.com/en-us/download/dotnet-framework)
 - Azure OpenAI Resource (with `gpt-4.1`, `gpt-4o`, or `o3-mini` deployments)
 - SQL Server with accessible schema
+
+## HOW TO USE
+
+<img src="./images/howtouse.jpg" alt="howtouse" width="800" >
 
 ---
 
