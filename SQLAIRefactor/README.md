@@ -37,19 +37,20 @@ This technique can represent an advancement in SQL Server application developmen
 
 ---
 
-## HOW TO USE
+# Using the Tool: A Simple Guide
 
 <img src="./images/howtouse.png" alt="howtouse" width="800" >
 
-# Using the Tool: A Simple Guide
-
-# 1 Paste Your Code
+## 1 Paste Your Code
 Insert the original T-SQL code you want to optimize into the left panel of the interface.
-# 2 (Optional) Connect to a Database
+
+## 2 (Optional) Connect to a Database
 For more accurate optimization, especially when metadata is required, connect to the relevant database. This allows the tool to retrieve metadata and pass it to OpenAI for better results.
-# 3 Generate Optimization
+
+## 3 Generate Optimization
 Click the button to submit your code. The tool sends the input from the left panel as a prompt to the AI.
-# 4 Review Results
+
+## 4 Review Results
 The AI returns the optimized T-SQL code, along with the applied refactoring rules and additional insights or considerations.
 ---
 
