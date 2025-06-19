@@ -529,5 +529,5 @@ As a final step, save and publish the flow. The entire logic flow must appear li
 
 <img src="./images/Flow.jpg" alt="flow" width="600" >
 
-Go back to continue [Configuration Link](./UpdateManager/README.md)
+Go back to continue [Configuration Link](../../README.md#flow1)
 

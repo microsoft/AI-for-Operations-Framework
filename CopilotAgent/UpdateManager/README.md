@@ -196,6 +196,7 @@ Now after UMChoise Condition, create new flow
 <img src="./images/flow-bank.jpg" alt="NewFlowBlank" width="800" >
 
 > [!IMPORTANT]
+> <span id="flow1"></span>
 > At this point follow this configuration link to create GetUpdateManagerOverview Flow: [Configuration Link](./Flow/getUpdateManagerOverviewFlow/README.md )
 
 After completed the first Power Automate Flow, modify the OpenAI URL and API Key in the "Call OpenAI Endpoint" block:
@@ -231,6 +232,7 @@ After that create a new flow
 <img src="./images/flow-bank.jpg" alt="flowblank" width="800" >
 
 > [!IMPORTANT]
+> <span id="flow3"></span>
 > At this point follow this configuration link to create OneTimeUpdateFlow: [Configuration Link](./Flow/OneTimeUpdateFlow/README.md )
 
 Set as input for the "Create Generative Answer" block the flow output, so "UpdateStatus":
