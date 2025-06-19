@@ -195,7 +195,9 @@ Now after UMChoise Condition, create new flow
 
 <img src="./images/flow-bank.jpg" alt="NewFlowBlank" width="800" >
 
-At this point follow this configuration link: [Configuration Link](./Flow/getUpdateManagerOverviewFlow/README.md )
+At this point follow this configuration link to creato GetUpdateManagerOverview Flow: [Configuration Link](./Flow/getUpdateManagerOverviewFlow/README.md )
+
+
 
 
 
