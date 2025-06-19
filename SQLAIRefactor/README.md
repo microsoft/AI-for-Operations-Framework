@@ -52,6 +52,7 @@ Click the button to submit your code. The tool sends the input from the left pan
 
 ## 4 Review Results
 The AI returns the optimized T-SQL code, along with the applied refactoring rules and additional insights or considerations.
+
 ---
 
 ## 📄 License
