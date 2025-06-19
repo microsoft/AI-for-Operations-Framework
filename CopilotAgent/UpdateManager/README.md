@@ -195,9 +195,25 @@ Now after UMChoise Condition, create new flow
 
 <img src="./images/flow-bank.jpg" alt="NewFlowBlank" width="800" >
 
-At this point follow this configuration link to creato GetUpdateManagerOverview Flow: [Configuration Link](./Flow/getUpdateManagerOverviewFlow/README.md )
+> [!IMPORTANT]
+> At this point follow this configuration link to create GetUpdateManagerOverview Flow: [Configuration Link](./Flow/getUpdateManagerOverviewFlow/README.md )
 
+After completed the first Power Automate Flow, modify the OpenAI URL and API Key in the "Call OpenAI Endpoint" block:
 
+<img src="./images/CallOpenAIEndpoint.jpg" alt="callopenaiendopoint" width="800" >
+
+Now let's move in the right branch of the parallelism. Ensure to select "servername" as a variable for the block "Question single server":
+
+<img src="./images/servername-variable.jpg" alt="servername" width="800" >
+
+After that create a new flow
+
+<img src="./images/new-flow.jpg" alt="NewFlow Get Update Manager Overview" width="800" >
+
+<img src="./images/new-flow2.jpg" alt="NewFlow2" width="800" >
+
+> [!IMPORTANT]
+> At this point follow this configuration link to create GetServerNameUMStatus Flow: [Configuration Link](./Flow/getserver%20name%20um%20statusFlow/README.md )
 
 
 
