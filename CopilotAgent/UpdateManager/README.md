@@ -239,6 +239,8 @@ Set as input for the "Create Generative Answer" block the flow output, so "Updat
 
 <img src="./images/GenerativeAnswerOneTimeUpdate.jpg" alt="UpdateStatus" width="800" >
 
+Now your topic for UpdateManager is completed, you can continue the customization, test and publish it.
+
 
 
 
