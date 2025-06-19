@@ -27,8 +27,6 @@ This technique can represent an advancement in SQL Server application developmen
 - Supports both Windows and SQL Authentication
 - Renders results in an HTML-based view with syntax highlighting
 
----
-
 
 ## 📦 Prerequisites
 
@@ -36,6 +34,8 @@ This technique can represent an advancement in SQL Server application developmen
 - [.NET Framework 4.8+](https://dotnet.microsoft.com/en-us/download/dotnet-framework)
 - Azure OpenAI Resource (with `gpt-4.1`, `gpt-4o`, or `o3-mini` deployments)
 - SQL Server with accessible schema
+
+---
 
 ## HOW TO USE
 
