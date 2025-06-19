@@ -1,0 +1,13 @@
+{
+  "max_tokens": 2000,
+  "messages": [
+    {
+      "content": "You are a System Administrator.",
+      "role": "user"
+    },
+    {
+      "content": "Using the output below, create a report of the virtual machines regarding the update status .'@{body('HTTP_request_graph')}'. Create a description about all the updates.",
+      "role": "user"
+    }
+  ]
+}

@@ -1,0 +1,24 @@
+Subscritpion: body('Parse_JSON')?['data']?[0]?['subscriptionId']
+Resource Group: body('Parse_JSON')?['data']?[0]?['resourceGroup']
+Resource Provider: first(split(body('Parse_JSON')?['data']?[0]?['type'], '/'))
+Short Resource ID: machines/@{triggerBody()?['text']}
+Client Api Version: @{variables('apiversion')}
+Action name: installPatches
+
+Body:
+{
+  "maximumDuration": "PT120M",
+  "rebootSetting": "IfRequired",
+  "windowsParameters": {
+    "classificationsToInclude": [
+      "Security",
+      "UpdateRollup",
+      "FeaturePack",
+      "ServicePack",
+      "Critical",
+      "Definition",
+      "Tools",
+      "Updates"
+    ]
+  }
+}

@@ -1,0 +1,1 @@
+@{body ('Parse_JSON_OpenAI')?['choices']}

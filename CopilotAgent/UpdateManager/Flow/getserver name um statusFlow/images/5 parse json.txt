@@ -1,0 +1,67 @@
+{
+    "properties": {
+        "extendedLocation": {},
+        "id": {
+            "type": "string"
+        },
+        "identity": {},
+        "kind": {
+            "type": "string"
+        },
+        "location": {
+            "type": "string"
+        },
+        "managedBy": {
+            "type": "string"
+        },
+        "name": {
+            "type": "string"
+        },
+        "plan": {},
+        "properties": {
+            "properties": {
+                "classifications": {
+                    "items": {
+                        "type": "string"
+                    },
+                    "type": "array"
+                },
+                "kbId": {
+                    "type": "string"
+                },
+                "lastModifiedDateTime": {
+                    "type": "string"
+                },
+                "patchId": {
+                    "type": "string"
+                },
+                "patchName": {
+                    "type": "string"
+                },
+                "publishedDateTime": {
+                    "type": "string"
+                },
+                "rebootBehavior": {
+                    "type": "string"
+                }
+            },
+            "type": "object"
+        },
+        "resourceGroup": {
+            "type": "string"
+        },
+        "sku": {},
+        "subscriptionId": {
+            "type": "string"
+        },
+        "tags": {},
+        "tenantId": {
+            "type": "string"
+        },
+        "type": {
+            "type": "string"
+        },
+        "zones": {}
+    },
+    "type": "object"
+}

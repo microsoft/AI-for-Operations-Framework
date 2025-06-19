@@ -9,6 +9,9 @@ Welcome to the **Microsoft Azure AI for Operation Framework** repo! The purpose 
 | CostMonthlyCheck Integration | Logic App used to Monitor Cost Monthly with OpenAI comment | [Configuration Link](./CostMonthlyCheck/README.md) |
 | Anomalies Detection Integration | Logic App used to Monitor Anomalies Detection | [Configuration Link](./AnomaliesDetection/README.md) |
 | AI for Operation Framework LZ | Foundation - ARM template for AI for Op Landing Zone | [Configuration Link](./OpenAI-CoreIntegrationLZ/README.md) |
+| SQL Refactor Solution | SQL Code refactoring according best practice | [Configuration Link](./SQLAIRefactor/README.md) |
+| Copilot Studio Agent | Integration with Microsoft Copilot Studio Agent | [Configuration Link](./CopilotAgent/README.md) |
+
 
 <h2>Learning Resources</h2>
 
