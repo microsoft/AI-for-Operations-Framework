@@ -208,12 +208,34 @@ Now let's move in the right branch of the parallelism. Ensure to select "servern
 
 After that create a new flow
 
-<img src="./images/new-flow.jpg" alt="NewFlow Get Update Manager Overview" width="800" >
-
 <img src="./images/new-flow2.jpg" alt="NewFlow2" width="800" >
+
+<img src="./images/flow-bank.jpg" alt="flowblank" width="800" >
 
 > [!IMPORTANT]
 > At this point follow this configuration link to create GetServerNameUMStatus Flow: [Configuration Link](./Flow/getserver%20name%20um%20statusFlow/README.md )
+
+Set as input for the "Create Generative Answer" block the flow output, so "umstatusserver":
+
+<img src="./images/GenerativeAnswerUMServerStatus.jpg" alt="umstatusserver" width="800" >
+
+Set , for the question block, "onetimeupdate" output variable:
+
+<img src="./images/onetimeupdate-variable.jpg" alt="onetimeupdate" width="800" >
+
+After that create a new flow
+
+<img src="./images/new-flow3.jpg" alt="NewFlow3" width="800" >
+
+<img src="./images/flow-bank.jpg" alt="flowblank" width="800" >
+
+> [!IMPORTANT]
+> At this point follow this configuration link to create OneTimeUpdateFlow: [Configuration Link](./Flow/OneTimeUpdateFlow/README.md )
+
+
+
+
+
 
 
 
