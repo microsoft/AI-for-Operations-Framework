@@ -410,7 +410,7 @@ Click again on "+" and select "Initialize Variable" and call variable "respond":
 
 Now create an "Apply To Each" block, and ensure that the variable follow the images below:
 
-<img src="./images/10 For Each.png.jpg" alt="Applytoeach" width="800" >
+<img src="./images/10 For Each.png" alt="Applytoeach" width="800" >
 
 ```code
 @{body ('Parse_JSON_OpenAI')?['choices']}
@@ -432,5 +432,5 @@ As a final step, save and publish the flow. The entire logic flow must appear li
 
 <img src="./images/12 flow.png" alt="flow" width="600" >
 
-Go back to continue [Configuration Link](./UpdateManager/README.md#flow2)
+Go back to continue [Configuration Link](../../README.md#flow2)
 
