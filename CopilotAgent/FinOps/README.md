@@ -137,7 +137,7 @@ On the right side of the condition, after "All other conditions" block, add a ne
 <img src="./images/4 flow.png" alt="4" width="800" >
 
 > [!IMPORTANT]
-> <span id="flow1"></span>
+> <span id="flow2"></span>
 > At this point follow this configuration link to create GetSubCost Flow: [Configuration Link](./Flow/GetSubCost/README.md)
 
 After that we can complete the topic adding the output of the GetSubCost flow to the "Create generative answers" block:
