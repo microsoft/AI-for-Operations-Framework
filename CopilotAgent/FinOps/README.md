@@ -115,76 +115,33 @@ beginDialog:
 inputType: {}
 outputType: {}
 ```
------Start here Tommaso-----
 
-When the topic is created, set the UMChoise Variable inside the question block:
+When the topic is created the first thing to do is to add a flow after the trigger:
 
-<img src="./images/UMChoise-variable.jpg" alt="CUMChoise" width="800" >
-
-<img src="./images/UMChoise-properties.png" alt="UMChoiseProperties" width="800" >
-
-Check the UMChoise condition in the left branch of the parallelism:
-
-<img src="./images/UMChoise-condition.jpg" alt="UMChoiseCondition" width="800" >
-
-Now after UMChoise Condition, create new flow 
-
-<img src="./images/new-flow.jpg" alt="NewFlow Get Update Manager Overview" width="800" >
-
-<img src="./images/flow-bank.jpg" alt="NewFlowBlank" width="800" >
+<img src="./images/1 flow.png" alt="1" width="800" >
 
 > [!IMPORTANT]
 > <span id="flow1"></span>
-> At this point follow this configuration link to create GetUpdateManagerOverview Flow: [Configuration Link](./Flow/getUpdateManagerOverviewFlow/README.md )
+> At this point follow this configuration link to create CheckPermission Flow: [Configuration Link](./Flow/CheckPermission/README.md)
 
-After completed the first Power Automate Flow, modify the OpenAI URL and API Key in the "Call OpenAI Endpoint" block:
+Set the output of the flow to the "Set variable value" block following the example below:
 
-<img src="./images/CallOpenAIEndpoint.jpg" alt="callopenaiendopoint" width="800" >
+<img src="./images/2 permission.png" alt="2" width="800" >
 
-Now let's move in the right branch of the parallelism. Ensure to select "servername" as a variable for the block "Question single server":
+Now we can proceed with the condition, on the left side ensure to configure the "Condition" block like below:
 
-<img src="./images/servername-variable.jpg" alt="servername" width="800" >
+<img src="./images/3 permission denied.png" alt="3" width="800" >
 
-After that create a new flow
+On the right side of the condition, after "All other conditions" block, add a new flow:
 
-<img src="./images/new-flow2.jpg" alt="NewFlow2" width="800" >
-
-<img src="./images/flow-bank.jpg" alt="flowblank" width="800" >
+<img src="./images/4 flow.png" alt="4" width="800" >
 
 > [!IMPORTANT]
-> <span id="flow2"></span>
-> At this point follow this configuration link to create GetServerNameUMStatus Flow: [Configuration Link](./Flow/getserver%20name%20um%20statusFlow/README.md )
+> <span id="flow1"></span>
+> At this point follow this configuration link to create GetSubCost Flow: [Configuration Link](./Flow/GetSubCost/README.md)
 
-Set as input for the "Create Generative Answer" block the flow output, so "umstatusserver":
+After that we can complete the topic adding the output of the GetSubCost flow to the "Create generative answers" block:
 
-<img src="./images/GenerativeAnswerUMServerStatus.jpg" alt="umstatusserver" width="800" >
-
-Set , for the question block, "onetimeupdate" output variable:
-
-<img src="./images/onetimeupdate-variable.jpg" alt="onetimeupdate" width="800" >
-
-After that create a new flow
-
-<img src="./images/new-flow3.jpg" alt="NewFlow3" width="800" >
-
-<img src="./images/flow-bank.jpg" alt="flowblank" width="800" >
-
-> [!IMPORTANT]
-> <span id="flow3"></span>
-> At this point follow this configuration link to create OneTimeUpdateFlow: [Configuration Link](./Flow/OneTimeUpdateFlow/README.md )
-
-Set as input for the "Create Generative Answer" block the flow output, so "UpdateStatus":
-
-<img src="./images/GenerativeAnswerOneTimeUpdate.jpg" alt="UpdateStatus" width="800" >
+<img src="./images/5 generative answer.png" alt="5" width="800" >
 
 Now your topic for UpdateManager is completed, you can continue the customization, test and publish it.
-
-
-
-
-
-
-
-
-
-
