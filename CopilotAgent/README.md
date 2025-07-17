@@ -49,7 +49,7 @@ Follow the istructions below:
 **Solution Name** | **Information** | **Configuration** |
 | ------------- | ------------- | ------------- |
 | Copilot topic Update Manager | Topic used to integrate Update Manager with Copilot Studio | [Configuration Link](./UpdateManager/README.md) |
-| Copilot topic FinOps | Topic used to integrate FinOps to Copilot Studio | **work in progress** |
+| Copilot topic FinOps | Topic used to integrate FinOps to Copilot Studio | [Configuration Link](./FinOps/README.md) |
 
 
 
