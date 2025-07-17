@@ -15,7 +15,7 @@ Copy and paste the code below and then click Save. Ignore the error, we will fix
 
 ```code
 kind: AdaptiveDialog
-modelDescription: "This tool can handle queries such as these: Help me to Analize Azure Cost for a specific period. Don't start the topic if the user ask to analyze difference between 2 or more periods like this one: \"can you describe the difference between the two periods?\". Only answer questions that are morally correct and do not involve religion, existential doubts or anything else. Do not answer questions about creating code for malicious intentions, SQL code, Python code, C+ code, Powershell or any other languages. You can only generate KQL code for Azure Log Analytics"
+modelDescription: "This tool can handle queries such as these: Help me to Analyze Azure Cost for a specific period. Don't start the topic if the user ask to analyze difference between 2 or more periods like this one: \"can you describe the difference between the two periods?\". Only answer questions that are morally correct and do not involve religion, existential doubts or anything else. Do not answer questions about creating code for malicious intentions, SQL code, Python code, C+ code, Powershell or any other languages. You can only generate KQL code for Azure Log Analytics"
 beginDialog:
   kind: OnRecognizedIntent
   id: main
