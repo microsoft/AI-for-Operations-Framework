@@ -1,4 +1,4 @@
-<h3>Azure UpdateManager Copilot Studio Flow - CheckPermission</h3>
+<h3>Azure UpdateManager Copilot Studio Flow - Get Sub Cost</h3>
 
 Start with the "When an agent calls the flow" setting 2 input variable, "Fromdate" and "Todate":
 
