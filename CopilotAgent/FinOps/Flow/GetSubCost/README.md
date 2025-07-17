@@ -70,7 +70,7 @@ You can also follow the configuration JSON below:
 }
 ```
 
-For all the POST Operation is important to have a Service Principal on <a href="https://learn.microsoft.com/en-us/entra/identity-platform/howto-create-service-principal-portal">Azure with the required permition for the operation</a>s.
+For all the POST Operation is important to have a Service Principal on <a href="https://learn.microsoft.com/en-us/entra/identity-platform/howto-create-service-principal-portal">Azure with the required permition for the operations</a>.
 
 After that pass the Body of the block to a new "Parse JSON" block below the "HTTP Request" block. 
 
@@ -212,4 +212,4 @@ And on the "Respond to the agent" block set the Output Variable name as "CostOut
 
 <img src="./images/8 end.png" alt="8" width="800" >
 
-Go back to continue [Configuration Link](../../README.md#flow2)
+Go back to continue [Configuration Link](../../README.md#finopsflowtwo)

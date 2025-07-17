@@ -18,4 +18,4 @@ Remember to change the Settings for the "Respond to agent" block in order to run
 
 <img src="./images/3 setting.png" alt="3" width="800" >
 
-Go back to continue [Configuration Link](../../README.md#flow1)
+Go back to continue [Configuration Link](../../README.md#finopsflowone)

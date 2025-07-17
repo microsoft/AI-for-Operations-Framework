@@ -123,7 +123,7 @@ When the topic is created the first thing to do is to add a flow after the trigg
 <img src="./images/flow-bank.jpg" alt="1" width="800" >
 
 > [!IMPORTANT]
-> <span id="flow1"></span>
+< <span id="finopsflowone"></span>
 > At this point follow this configuration link to create CheckPermission Flow: [Configuration Link](./Flow/CheckPermission/README.md)
 
 Set the output of the flow to the "Set variable value" block following the example below:
@@ -139,7 +139,7 @@ On the right side of the condition, after "All other conditions" block, add a ne
 <img src="./images/4 flow.png" alt="4" width="800" >
 
 > [!IMPORTANT]
-> <span id="flow2"></span>
+> <span id="finopsflowtwo"></span>
 > At this point follow this configuration link to create GetSubCost Flow: [Configuration Link](./Flow/GetSubCost/README.md)
 
 After that we can complete the topic adding the output of the GetSubCost flow to the "Create generative answers" block:
