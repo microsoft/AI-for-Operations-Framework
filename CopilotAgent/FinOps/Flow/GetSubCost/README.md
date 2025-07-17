@@ -6,7 +6,7 @@ Start with the "When an agent calls the flow" setting 2 input variable, "Fromdat
 
 Leave the value empty.
 
-The second step is to add with the "+" button an "HTTP Request" block configuring it following the paramenter below:
+The second step is to add with the "+" button an "HTTP Request" block configuring it following the parameter below:
 
 <img src="./images/2 http.png" alt="2" width="800" >
 <img src="./images/3 http.png" alt="3" width="800" >
