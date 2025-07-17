@@ -198,7 +198,7 @@ Paste the schema below:
 }
 ```
 
-Now Inizialize a new variable, call it "CostOutput" and set the type as a String:
+Now Initialize a new variable, call it "CostOutput" and set the type as a String:
 
 <img src="./images/7 variable.png" alt="7" width="800" >
 
