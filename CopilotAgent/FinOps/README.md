@@ -2,7 +2,7 @@
  
 | **Parameters** | **Information** | **Note** |
 | ------------- | ------------- | ------------- |
-| Call OpenAI Endpoint| The URL of your openAI endpoint | You can found the value inside the OpenAI resource inside Azure Cognitive Service |
+| Call OpenAI Endpoint| The URL of your openAI endpoint | You can find the value inside the OpenAI resource inside Azure Cognitive Service |
 | api-key | The API code for manage your OpenAI service | The parameter is inside the second "Initialize Variable". Put your question in the "value" attribute  |
 
 <h3> Deployment and Result </h3>
