@@ -120,6 +120,8 @@ When the topic is created the first thing to do is to add a flow after the trigg
 
 <img src="./images/1 flow.png" alt="1" width="800" >
 
+<img src="./images/flow-bank.jpg" alt="1" width="800" >
+
 > [!IMPORTANT]
 > <span id="flow1"></span>
 > At this point follow this configuration link to create CheckPermission Flow: [Configuration Link](./Flow/CheckPermission/README.md)
